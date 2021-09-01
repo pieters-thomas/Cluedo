@@ -1,0 +1,5 @@
+name: Cluedo API
+package: Cluedo
+description: 'Custom module that provides rest resources to play a simplified version of Cluedo.'
+type: module
+core_version_requirement: ^9
