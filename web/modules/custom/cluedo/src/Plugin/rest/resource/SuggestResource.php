@@ -3,10 +3,8 @@
 namespace Drupal\cluedo\Plugin\rest\resource;
 
 use Drupal;
-use Drupal\cluedo\Models\GameManager;
 use Drupal\cluedo\Services\SuggestionManager;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\rest\Annotation\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
@@ -32,24 +30,17 @@ class SuggestResource extends ResourceBase
   /**
    * Constructs a new ExampleGetRestResource object.
    *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param array $serializer_formats
-   *   The available serialization formats.
-   * @param LoggerInterface $logger
-   *   A logger instance.
+   * @param array $configuration A configuration array containing information about the plugin instance.
+   * @param string $plugin_id The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition The plugin implementation definition.
+   * @param array $serializer_formats The available serialization formats.
+   * @param LoggerInterface $logger A logger instance.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats,
     LoggerInterface $logger, SuggestionManager $manager)
   {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
-
     $this->manager = $manager;
-
   }
 
   /**
@@ -69,8 +60,6 @@ class SuggestResource extends ResourceBase
       $manager,
     );
   }
-
-
 
   /**
    * handles POST request.

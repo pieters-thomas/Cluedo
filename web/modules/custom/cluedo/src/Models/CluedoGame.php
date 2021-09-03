@@ -3,6 +3,7 @@
 namespace Drupal\cluedo\Models;
 
 use Drupal;
+use Drupal\cluedo\Services\SuggestionManager;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\node\Entity\Node;
 use Exception;
@@ -19,24 +20,15 @@ class CluedoGame
   /**
    * @throws Exception
    */
-  public function __construct()
+  public function __construct(SuggestionManager $manager)
   {
     $this->gameKey = $this->generateGameKey();
-    $deck = $this->fetchDeck();
-    shuffle($deck);
-    $playerPool = [];
-    foreach ($deck as $card) {
-      if ($card['type'] === 'room' && !isset($this->roomId)) {
-        $this->roomId = (int) $card['nid'];
-      } elseif ($card['type'] === 'weapon' && !isset($this->weaponId)) {
-        $this->weaponId = (int) $card['nid'];
-      } elseif ($card['type'] === 'suspect' && !isset($this->murdererId)) {
-        $this->murdererId = (int) $card['nid'];
-      } else {
-        $playerPool[] = (int) $card['nid'];
-      }
-    }
-    $this->playerNodeIds = $this->generatePlayers(3, $playerPool);
+    $deck = new Deck($manager);
+
+    $this->roomId = $deck->getFirstRoomId();
+    $this->weaponId = $deck->getFirstWeaponId();
+    $this->murdererId = $deck->getFirstSuspectId();
+    $this->playerNodeIds = $this->generatePlayers(3, $deck->getPool());
   }
 
   /**
@@ -66,7 +58,6 @@ class CluedoGame
     return $this->gameKey;
   }
 
-
   /**
    * Generates a key of length = 6.
    * @throws Exception
@@ -84,18 +75,7 @@ class CluedoGame
     if ($keys === false) {
       return $newKey;
     }
-
     return $this->generateGameKey();
-  }
-
-  public function fetchDeck()
-  {
-    $query = Drupal::database()->select('node', 'n')->fields('n', ['type', 'nid']);
-    $group = $query->orConditionGroup()
-      ->condition('type', 'room', 'LIKE')
-      ->condition('type', 'suspect', 'LIKE')
-      ->condition('type', 'weapon', 'LIKE');
-    return $query->condition($group)->execute()->fetchAll(PDO::FETCH_ASSOC);
   }
 
   /**

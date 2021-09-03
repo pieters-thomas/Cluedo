@@ -22,7 +22,7 @@ class SuggestionManager
   public function processSuggestion(string $gameKey, string $room, string $weapon, string $murderer): array
   {
     $suggestion = new ClueSet($this->getNodeId($room), $this->getNodeId($weapon), $this->getNodeId($murderer));
-    $solution = $this->getSolution($gameKey);
+    $solution = $this->fetchSolution($gameKey);
 
     return $solution->compare($suggestion);
   }
@@ -45,7 +45,7 @@ class SuggestionManager
   /**
    * @throws Exception
    */
-  private function getSolution($key): ClueSet
+  private function fetchSolution($key): ClueSet
   {
     try {
       $query = $this->connection->select('node__field_game_key', 'key');
@@ -63,6 +63,29 @@ class SuggestionManager
     } catch (Exception) {
       throw new Exception('Could not fetch solution');
     }
+
+  }
+
+  public function fetchCards()
+  {
+    $query = $this->connection->select('node', 'n')->fields('n', ['type', 'nid']);
+    $group = $query->orConditionGroup()
+      ->condition('type', 'room', 'LIKE')
+      ->condition('type', 'suspect', 'LIKE')
+      ->condition('type', 'weapon', 'LIKE');
+    $cards = $query->condition($group)->execute()->fetchAll(PDO::FETCH_ASSOC);
+    shuffle($cards);
+    return $cards;
+  }
+
+  public function fetchDeck(): array
+  {
+    $query = $this->connection->select('node', 'n')->fields('n', ['type', 'nid']);
+    $group = $query->orConditionGroup()
+      ->condition('type', 'room', 'LIKE')
+      ->condition('type', 'suspect', 'LIKE')
+      ->condition('type', 'weapon', 'LIKE');
+    return $query->condition($group)->execute()->fetchAll(PDO::FETCH_ASSOC);
 
   }
 }
