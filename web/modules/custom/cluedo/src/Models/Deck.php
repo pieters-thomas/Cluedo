@@ -2,87 +2,68 @@
 
 namespace Drupal\cluedo\Models;
 
-use Drupal\cluedo\Services\SuggestionManager;
 use Exception;
+use JetBrains\PhpStorm\Pure;
 
 class Deck
 {
-  private int $firstWeaponId;
-  private int $firstRoomId;
-  private int $firstSuspectId;
-  private array $pool;
+  /**
+   * @var Clue[]
+   */
+  private array $cards = [];
+
+  public function shuffleDeck():void
+  {
+    shuffle($this->cards);
+  }
+
+  public function addCard(Clue $clue): void
+  {
+    $this->cards[] = $clue;
+  }
+
+  public function drawTopCard(): ?Clue
+  {
+    return array_pop($this->cards);
+  }
 
   /**
    * @throws Exception
    */
-  public function __construct(SuggestionManager $dataBase)
+  public function drawFirstOfType(string $type): Clue
   {
-    $deck = $dataBase->fetchCards();
-
-    $this->firstWeaponId = $this->getFirstIdOfType('weapon',$deck);
-    $this->firstRoomId = $this->getFirstIdOfType('room',$deck);
-    $this->firstSuspectId = $this->getFirstIdOfType('suspect',$deck);
-    $this->pool = $this->arrayToPool($deck);
-
-  }
-
-  /**
-   * @return int
-   */
-  public function getFirstWeaponId(): int
-  {
-    return $this->firstWeaponId;
-  }
-
-  /**
-   * @return int
-   */
-  public function getFirstRoomId(): int
-  {
-    return $this->firstRoomId;
-  }
-
-  /**
-   * @return int
-   */
-  public function getFirstSuspectId(): int
-  {
-    return $this->firstSuspectId;
-  }
-
-  /**
-   * @return array
-   */
-  public function getPool(): array
-  {
-    return $this->pool;
-  }
-
-
-
-  /**
-   * @throws Exception
-   */
-  private function getFirstIdOfType(string $type, array &$deck): int
-  {
-    foreach ($deck as $index=>$card)
+    foreach ($this->cards as $index=>$card)
     {
-      if ($card['type'] === $type)
+      if ($card->getType() === $type)
       {
-        $cardId = array_splice($deck,$index,1);
-        return (int) $cardId[0]['nid'];
+        $draw = array_splice($this->cards,$index,1);
+        return $draw[0];
       }
     }
-    throw new Exception('Card type not found in deck');
+    throw new Exception("No card of type found in deck");
   }
 
-  private function arrayToPool(array $deck): array
+  /**
+   * @return Clue[]
+   */
+  #[Pure] public function getAllClueOfType(string $type): array
   {
-    $pool = [];
-    foreach ($deck as $card)
+    $clues = [];
+    foreach ($this->cards as $card)
     {
-      $pool[] = $card['nid'];
+      if ($card->getType() === $type)
+      {
+        $clues[] = $card;
+      }
     }
-    return $pool;
+    return $clues;
+  }
+
+  /**
+   * @return Clue[]
+   */
+  public function getCards(): array
+  {
+    return $this->cards;
   }
 }

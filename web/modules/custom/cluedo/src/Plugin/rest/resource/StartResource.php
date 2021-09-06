@@ -2,9 +2,8 @@
 
 namespace Drupal\cluedo\Plugin\rest\resource;
 
-use Drupal\cluedo\Models\CluedoGame;
-use Drupal\cluedo\Services\SuggestionManager;
-use Drupal\Core\Entity\EntityStorageException;
+use Drupal\cluedo\Services\GameManager;
+use Drupal\cluedo\Services\Repository;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rest\Annotation\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
@@ -27,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class StartResource extends ResourceBase
 {
 
-  private SuggestionManager $manager;
+  private GameManager $gameManager;
 
   /**
    * Constructs a new ExampleGetRestResource object.
@@ -39,10 +38,10 @@ class StartResource extends ResourceBase
    * @param LoggerInterface $logger A logger instance.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats,
-                              LoggerInterface $logger, SuggestionManager $manager)
+                              LoggerInterface $logger, GameManager $manager)
   {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
-    $this->manager = $manager;
+    $this->gameManager = $manager;
   }
 
   /**
@@ -51,9 +50,9 @@ class StartResource extends ResourceBase
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): ResourceBase|SuggestResource|ContainerFactoryPluginInterface|static
   {
     /**
-     * @var SuggestionManager $manager
+     * @var GameManager $manager
      */
-    $manager = $container->get('cluedo.suggestion_manager');
+    $manager = $container->get('cluedo.game_manager');
 
     return new static(
       $configuration, $plugin_id, $plugin_definition,
@@ -66,16 +65,22 @@ class StartResource extends ResourceBase
   /**
    * Responds to GET request, return game-key
    * @return ResourceResponse
-   * @throws EntityStorageException
    * @throws Exception
    */
   public function get(): ResourceResponse
   {
-    $newGame = new CluedoGame($this->manager);
-    $newGame->storeNewGame();
+    try {
 
-    return new ResourceResponse(['key'=> $newGame->getGameKey()]);
+      $repo = new Repository();
+      $gameManager = new GameManager();
+      $gameKey = $gameManager->createNewGame($repo,4);
+
+      return new ResourceResponse(['key'=>$gameKey]);
+
+    }catch (Exception $e)
+    {
+      return new ResourceResponse($e->getMessage()) ;
+    }
   }
-
 
 }
