@@ -43,7 +43,6 @@ class Solution
   }
 
 
-
   #[Pure] public function equalsSuggested($room, $weapon, $murderer): bool
   {
     if($this->room->getName() !== $room)

@@ -12,7 +12,7 @@ use Drupal\rest\ResourceResponse;
  * Provides a resource that processes a suggestion and returns if/how disproved
  *
  * @RestResource(
- *   id = "accuse_resource",
+ *   id = "accusation_resource",
  *   label = "Cluedo Accusation Resource",
  *   uri_paths = {
  *   "create" = "/api/cluedo/accuse"
