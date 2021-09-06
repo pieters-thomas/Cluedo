@@ -1,0 +1,9 @@
+id: accusation_resource
+plugin_id: accusation_resource
+granularity: method
+configuration:
+  POST:
+    supported_formats:
+      - json
+    supported_auth:
+      - basic_auth

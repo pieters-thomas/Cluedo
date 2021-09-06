@@ -1,4 +1,3 @@
 services:
-  cluedo.suggestion_manager:
-    class: Drupal\cluedo\Services\SuggestionManager
-    arguments: ['@database']
+  cluedo.game_manager:
+    class: Drupal\cluedo\Services\GameManager
