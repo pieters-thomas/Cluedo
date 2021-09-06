@@ -22,11 +22,6 @@ class Deck
     $this->cards[] = $clue;
   }
 
-  public function drawTopCard(): ?Clue
-  {
-    return array_pop($this->cards);
-  }
-
   /**
    * @throws Exception
    */

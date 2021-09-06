@@ -52,7 +52,7 @@ class GameManager
         }
       }
 
-      //Create Witness nodes and keep track of the ids
+      //Create player nodes and keep track of the ids
       foreach ($players as $index => $player)
       {
 
@@ -67,7 +67,7 @@ class GameManager
         $node->enforceIsNew();
         $node->save();
 
-        $players[$index]->setNodeId($node->id());
+        $player->setNodeId($node->id());
         $playerNodeIds[] = $node->id();
       }
 
@@ -87,8 +87,9 @@ class GameManager
       $gameNode->save();
 
       return $gameKey;
-    }catch (Exception $e){
-      return $e->getMessage();
+    }catch (Exception){
+
+      return new Exception("Unable to create new Game");
     }
   }
 

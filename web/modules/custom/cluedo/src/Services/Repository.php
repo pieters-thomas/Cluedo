@@ -2,6 +2,7 @@
 
 namespace Drupal\cluedo\Services;
 
+use Drupal;
 use Drupal\cluedo\Models\Clue;
 use Drupal\cluedo\Models\Deck;
 use Drupal\cluedo\Models\Player;
@@ -16,7 +17,7 @@ class Repository
    */
   public function fetchAllClues(): Deck
   {
-    $query = \Drupal::database()->select('node', 'n');
+    $query = Drupal::database()->select('node', 'n');
     $query->leftJoin('node_field_revision', 'nfr', 'n.nid = nfr.nid');
     $query->addField('n', 'nid', 'id');
     $query->addField('n', 'type', 'type');
@@ -25,7 +26,7 @@ class Repository
       ->condition('type', 'room', 'LIKE')
       ->condition('type', 'suspect', 'LIKE')
       ->condition('type', 'weapon', 'LIKE'));
-    $clueArray = $query->execute()->fetchAll(\PDO::FETCH_ASSOC);
+    $clueArray = $query->execute()->fetchAll(PDO::FETCH_ASSOC);
     $deck = new Deck();
 
     foreach ($clueArray as $clue) {
@@ -42,13 +43,13 @@ class Repository
    */
   public function fetchClueByTitle(string $title): Clue
   {
-    $query = \Drupal::database()->select('node', 'n');
+    $query = Drupal::database()->select('node', 'n');
     $query->leftJoin('node_field_revision', 'nfr', 'n.nid = nfr.nid');
     $query->addField('n', 'nid', 'id');
     $query->addField('n', 'type', 'type');
     $query->addField('nfr', 'title', 'name');
     $query->condition('title', $title, 'LIKE');
-    $clue = $query->execute()->fetch(\PDO::FETCH_ASSOC);
+    $clue = $query->execute()->fetch(PDO::FETCH_ASSOC);
 
     return new Clue($clue['id'], $clue['type'], $clue['name']);
   }
@@ -60,7 +61,7 @@ class Repository
    */
   public function fetchPlayersByKey($key): array
   {
-    $query = \Drupal::database()->select('node__field_game_key', 'key');
+    $query = Drupal::database()->select('node__field_game_key', 'key');
     $query->addField('nfgp', 'field_game_players_target_id', 'playerId');
     $query->addField('nfr', 'title', 'playerName');
     $query->addField('nfpc', 'field_player_clues_target_id', 'clueId');
@@ -73,7 +74,7 @@ class Repository
     $query->leftJoin('node_field_revision', 'nfr2', 'nfpc.field_player_clues_target_id = nfr2.nid');
     $query->leftJoin('node', 'n', 'n.nid = nfpc.field_player_clues_target_id');
     $query->condition('field_game_key_value', $key, 'LIKE');
-    $array = $query->execute()->fetchAll(\PDO::FETCH_ASSOC);
+    $array = $query->execute()->fetchAll(PDO::FETCH_ASSOC);
 
     $test = [];
     foreach ($array as $row) {
@@ -91,7 +92,7 @@ class Repository
 
   public function fetchSolutionByKey(string $gameKey): Solution
   {
-    $query = \Drupal::database()->select('node__field_game_key', 'key');
+    $query = Drupal::database()->select('node__field_game_key', 'key');
     $query->innerJoin('node__field_game_room', 'r', 'key.entity_id = r.entity_id');
     $query->innerJoin('node__field_game_weapon', 'w', 'key.entity_id = w.entity_id');
     $query->innerJoin('node__field_game_murderer', 'm', 'key.entity_id = m.entity_id');

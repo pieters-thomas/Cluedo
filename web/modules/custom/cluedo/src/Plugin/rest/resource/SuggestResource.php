@@ -4,6 +4,7 @@ namespace Drupal\cluedo\Plugin\rest\resource;
 
 use Drupal;
 use Drupal\cluedo\Services\Repository;
+use Drupal\cluedo\Services\SuggestionManager;
 use Drupal\rest\Annotation\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
@@ -31,27 +32,16 @@ class SuggestResource extends ResourceBase
   {
 
     $repo = new Repository();
-    $players = $repo->fetchPlayersByKey(Drupal::request()->get('key'));
+    $suggestionManager = new SuggestionManager();
 
-    foreach ($players as $player)
-    {
-      foreach ($player->getClues() as $clue)
-      {
-        if (in_array($clue->getName(), [$data['room'], $data['weapon'], $data['murderer']], true))
-        {
-          return new ResourceResponse
-          ([
-            'player' => $player->getName(),
-            'disproves' => $clue->getName(),
-            'type' => $clue->getType()
-          ]);
-        }
-      }
-    }
-    return new ResourceResponse([
-      'player' => '',
-      'disproves' => '',
-      'type' => ''
-    ]);
+    $players = $repo->fetchPlayersByKey(Drupal::request()->get('key'));
+    $response = $suggestionManager->disproveSuggestion(
+      $players,
+      $data['room'],
+      $data['weapon'],
+      $data['murderer']
+    );
+
+    return new ResourceResponse($response);
   }
 }
