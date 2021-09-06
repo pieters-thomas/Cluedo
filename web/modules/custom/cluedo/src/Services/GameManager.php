@@ -10,6 +10,12 @@ use Exception;
 
 class GameManager
 {
+   private const CLUE_TYPES = [
+     'room'=>'room',
+     'weapon'=>'weapon',
+     'suspect'=>'suspect',
+   ];
+
   /**
    * Creates and stores a new game in database while returning the game's key.
    * @throws Exception
@@ -24,7 +30,7 @@ class GameManager
       $deck->shuffleDeck();
 
       // Generate witnesses for the game
-      $playerProfiles = $deck->getAllClueOfType('suspect');
+      $playerProfiles = $deck->getAllClueOfType(self::CLUE_TYPES['suspect']);
 
       $players = [];
       $playerNodeIds = [];
@@ -38,9 +44,9 @@ class GameManager
 
       //Remove 3 solution cards from deck and distribute cards among witnesses
       $solution = new Solution(
-        $deck->drawFirstOfType('room'),
-        $deck->drawFirstOfType('weapon'),
-        $deck->drawFirstOfType('suspect')
+        $deck->drawFirstOfType(self::CLUE_TYPES['room']),
+        $deck->drawFirstOfType(self::CLUE_TYPES['weapon']),
+        $deck->drawFirstOfType(self::CLUE_TYPES['suspect'])
       );
 
       foreach ($deck->getCards() as $card) {
