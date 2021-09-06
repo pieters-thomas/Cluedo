@@ -23,13 +23,13 @@ class SuggestionManager
       foreach ($player->getClues() as $clue) {
         if (in_array($clue->getName(), [$roomName, $weaponName, $murdererName], true)) {
           return [
-            'player' => $player->getName(),
-            'disproves' => $clue->getName(),
+            'getuige' => $player->getName(),
+            'weerlegging' => $clue->getName(),
             'type' => $clue->getType()
           ];
         }
       }
     }
-    return ['player' => '', 'disproves' => '', 'type' => ''];
+    return ['getuige' => '', 'weerlegging' => '', 'type' => ''];
   }
 }

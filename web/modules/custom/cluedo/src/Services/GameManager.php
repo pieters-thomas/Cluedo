@@ -11,16 +11,16 @@ use Exception;
 class GameManager
 {
    private const CLUE_TYPES = [
-     'room'=>'room',
-     'weapon'=>'weapon',
-     'suspect'=>'suspect',
+     'kamer'=>'kamer',
+     'wapen'=>'wapen',
+     'karakter'=>'karakter',
    ];
 
   /**
    * Creates and stores a new game in database while returning the game's key.
    * @throws Exception
    */
-  public function createNewGame(Repository $repo, int $playerAmount): string
+  public function createNewGame(Repository $repo, int $playerAmount, $playerName): string
   {
     try {
 
@@ -30,7 +30,7 @@ class GameManager
       $deck->shuffleDeck();
 
       // Generate witnesses for the game
-      $playerProfiles = $deck->getAllClueOfType(self::CLUE_TYPES['suspect']);
+      $playerProfiles = $deck->getAllClueOfType(self::CLUE_TYPES['karakter']);
 
       $players = [];
       $playerNodeIds = [];
@@ -44,9 +44,9 @@ class GameManager
 
       //Remove 3 solution cards from deck and distribute cards among witnesses
       $solution = new Solution(
-        $deck->drawFirstOfType(self::CLUE_TYPES['room']),
-        $deck->drawFirstOfType(self::CLUE_TYPES['weapon']),
-        $deck->drawFirstOfType(self::CLUE_TYPES['suspect'])
+        $deck->drawFirstOfType(self::CLUE_TYPES['kamer']),
+        $deck->drawFirstOfType(self::CLUE_TYPES['wapen']),
+        $deck->drawFirstOfType(self::CLUE_TYPES['karakter'])
       );
 
       foreach ($deck->getCards() as $card) {
@@ -58,16 +58,16 @@ class GameManager
         }
       }
 
-      //Create player nodes and keep track of the ids
+//      Create player nodes and keep track of the ids
       foreach ($players as $index => $player)
       {
 
         $node = Node::create([
-          'type' => 'player',
-          'title' => 'Player ' . $index + 1,
-          'field_player_is_main' => false,
-          'field_player_profile' => $playerProfiles[$index]->getNodeId(),
-          'field_player_clues' => $player->getClueIds(),
+          'type' => 'getuige',
+          'title' => 'Speler ' . $index + 1,
+          'field_getuige_profiel' =>$playerProfiles[$index]->getNodeId(),
+          'field_getuige_clues' =>$player->getClueIds(),
+
         ]);
 
         $node->enforceIsNew();
@@ -79,13 +79,14 @@ class GameManager
 
       //Create game node
       $gameNode = Node::create([
-        'type' => 'game',
-        'title' => 'game',
-        'field_game_key' => $gameKey,
-        'field_game_players' => $playerNodeIds,
-        'field_game_room' => $solution->getRoom()->getNodeId(),
-        'field_game_weapon' => $solution->getWeapon()->getNodeId(),
-        'field_game_murderer' => $solution->getMurderer()->getNodeId(),
+        'type' => 'spel',
+        'title' => 'spel',
+        'field_spel_speler' => $playerName,
+        'field_spel_sleutel' => $gameKey,
+        'field_spel_getuigen' => $playerNodeIds,
+        'field_spel_kamer' => $solution->getRoom()->getNodeId(),
+        'field_spel_wapen' => $solution->getWeapon()->getNodeId(),
+        'field_spel_karakter' => $solution->getMurderer()->getNodeId(),
 
       ]);
 
@@ -93,9 +94,9 @@ class GameManager
       $gameNode->save();
 
       return $gameKey;
-    }catch (Exception){
+    }catch (Exception $e){
 
-      return new Exception("Unable to create new Game");
+      return $e->getMessage();
     }
   }
 
@@ -105,9 +106,9 @@ class GameManager
     $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $newKey = substr(str_shuffle($chars), 0, 6);
 
-    $query = Drupal::database()->select('node__field_game_key', 'keys')
-      ->fields('keys', ['field_game_key_value'])
-      ->condition('field_game_key_value', $newKey, 'LIKE');
+    $query = Drupal::database()->select('node__field_spel_sleutel', 'sleutels')
+      ->fields('sleutels', ['field_spel_sleutel_value'])
+      ->condition('field_spel_sleutel_value', $newKey, 'LIKE');
     $keys = $query->execute()->fetch();
 
     if ($keys === false) {

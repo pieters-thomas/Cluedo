@@ -2,6 +2,7 @@
 
 namespace Drupal\cluedo\Plugin\rest\resource;
 
+use Drupal;
 use Drupal\cluedo\Services\GameManager;
 use Drupal\cluedo\Services\Repository;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -25,7 +26,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class StartResource extends ResourceBase
 {
-
   private GameManager $gameManager;
 
   /**
@@ -63,17 +63,21 @@ class StartResource extends ResourceBase
   }
 
   /**
-   * Responds to GET request, return game-key
+   * Responds to GET request
+   * Expected get parameters (naam, aantal)
    * @return ResourceResponse
    * @throws Exception
    */
   public function get(): ResourceResponse
   {
     try {
+      $playerAmount = (int) htmlspecialchars(Drupal::request()->get('aantal'), ENT_QUOTES) ;
+      $playerName =  htmlspecialchars(Drupal::request()->get('naam'), ENT_QUOTES) ;
+
 
       $repo = new Repository();
       $gameManager = new GameManager();
-      $gameKey = $gameManager->createNewGame($repo,4);
+      $gameKey = $gameManager->createNewGame($repo,$playerAmount, $playerName);
 
       return new ResourceResponse(['key'=>$gameKey]);
 

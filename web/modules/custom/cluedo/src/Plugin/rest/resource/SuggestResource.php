@@ -37,9 +37,9 @@ class SuggestResource extends ResourceBase
     $players = $repo->fetchPlayersByKey(Drupal::request()->get('key'));
     $response = $suggestionManager->disproveSuggestion(
       $players,
-      $data['room'],
-      $data['weapon'],
-      $data['murderer']
+      $data['kamer'],
+      $data['wapen'],
+      $data['karakter']
     );
 
     return new ResourceResponse($response);
