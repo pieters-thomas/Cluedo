@@ -21,11 +21,9 @@ class SuggestionManager
   {
     foreach ($players as $player) {
       foreach ($player->getClues() as $clue) {
-        if (in_array(strtolower($clue->getName()), [
-          strtolower($roomName),
-          strtolower($weaponName),
-          strtolower($murdererName)],
-          true)) {
+        if (in_array(strtolower($clue->getName()), [strtolower($roomName), strtolower($weaponName), strtolower($murdererName)], true)) {
+
+
           return [
             'getuige' => $player->getName(),
             'weerlegging' => $clue->getName(),

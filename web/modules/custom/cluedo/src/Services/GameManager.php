@@ -16,12 +16,28 @@ class GameManager
      'karakter'=>'karakter',
    ];
 
+   private const GETUIGEN_MAX = 6;
+   private const GETUIGEN_MIN = 2;
+   private const SLEUTEL_LENGTE = 6;
+
   /**
    * Creates and stores a new game in database while returning the game's key.
    * @throws Exception
    */
-  public function createNewGame(Repository $repo, int $playerAmount, $playerName): string
+  public function createNewGame(Repository $repo, int $getuigenAantal): string
   {
+    //Getuigen aantal naar valide aantal;
+
+    if ($getuigenAantal < self::GETUIGEN_MIN)
+    {
+      $getuigenAantal = self::GETUIGEN_MIN;
+    }
+    if ($getuigenAantal > self::GETUIGEN_MAX)
+    {
+      $getuigenAantal = self::GETUIGEN_MAX;
+    }
+
+
     try {
 
       $gameKey = $this->generateUniqueKey();
@@ -36,9 +52,9 @@ class GameManager
       $playerNodeIds = [];
 
       $count = 0;
-      $countMax = $playerAmount;
+      $countMax = $getuigenAantal;
 
-      for ($i = 0; $i < $playerAmount; $i++) {
+      for ($i = 0; $i < $getuigenAantal; $i++) {
         $players[] = new Player(0, $playerProfiles[$i]->getName(), []);
       }
 
@@ -64,7 +80,7 @@ class GameManager
 
         $node = Node::create([
           'type' => 'getuige',
-          'title' => 'Speler ' . $index + 1,
+          'title' => 'Getuige ' . $index + 1,
           'field_getuige_profiel' =>$playerProfiles[$index]->getNodeId(),
           'field_getuige_clues' =>$player->getClueIds(),
 
@@ -81,7 +97,7 @@ class GameManager
       $gameNode = Node::create([
         'type' => 'spel',
         'title' => 'spel',
-        'field_spel_speler' => $playerName,
+        'field_speler' => Drupal::currentUser()->id(),
         'field_spel_sleutel' => $gameKey,
         'field_spel_getuigen' => $playerNodeIds,
         'field_spel_kamer' => $solution->getRoom()->getNodeId(),
@@ -104,7 +120,7 @@ class GameManager
   private function generateUniqueKey(): string
   {
     $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    $newKey = substr(str_shuffle($chars), 0, 6);
+    $newKey = substr(str_shuffle($chars), 0, self::SLEUTEL_LENGTE);
 
     $query = Drupal::database()->select('node__field_spel_sleutel', 'sleutels')
       ->fields('sleutels', ['field_spel_sleutel_value'])

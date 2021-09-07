@@ -27,6 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class StartResource extends ResourceBase
 {
   private GameManager $gameManager;
+  private Repository $repo;
 
   /**
    * Constructs a new ExampleGetRestResource object.
@@ -38,10 +39,11 @@ class StartResource extends ResourceBase
    * @param LoggerInterface $logger A logger instance.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats,
-                              LoggerInterface $logger, GameManager $manager)
+                              LoggerInterface $logger, GameManager $manager, Repository $repo)
   {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
     $this->gameManager = $manager;
+    $this->repo = $repo;
   }
 
   /**
@@ -51,14 +53,16 @@ class StartResource extends ResourceBase
   {
     /**
      * @var GameManager $manager
+     * @var Repository $repo
      */
     $manager = $container->get('cluedo.game_manager');
-
+    $repo = $container->get('cluedo.repository');
     return new static(
       $configuration, $plugin_id, $plugin_definition,
       $container->getParameter('serializer.formats'),
       $container->get('logger.factory')->get('example_node_rest'),
       $manager,
+      $repo
     );
   }
 
@@ -70,21 +74,10 @@ class StartResource extends ResourceBase
    */
   public function get(): ResourceResponse
   {
-    try {
       $playerAmount = (int) htmlspecialchars(Drupal::request()->get('aantal'), ENT_QUOTES) ;
-      $playerName =  htmlspecialchars(Drupal::request()->get('naam'), ENT_QUOTES) ;
-
-
-      $repo = new Repository();
-      $gameManager = new GameManager();
-      $gameKey = $gameManager->createNewGame($repo,$playerAmount, $playerName);
+      $gameKey = $this->gameManager->createNewGame($this->repo,$playerAmount);
 
       return new ResourceResponse(['key'=>$gameKey]);
-
-    }catch (Exception $e)
-    {
-      return new ResourceResponse($e->getMessage()) ;
-    }
   }
 
 }
