@@ -15,13 +15,17 @@ class SuggestionManager
    * @param string $murdererName
    * @return array
    */
-   #[Pure]
-   #[ArrayShape(['player' => "string", 'disproves' => "string", 'type' => "string"])]
-   public function disproveSuggestion(array $players, string $roomName, string $weaponName, string $murdererName): array
+  #[Pure]
+  #[ArrayShape(['player' => "string", 'disproves' => "string", 'type' => "string"])]
+  public function disproveSuggestion(array $players, string $roomName, string $weaponName, string $murdererName): array
   {
     foreach ($players as $player) {
       foreach ($player->getClues() as $clue) {
-        if (in_array($clue->getName(), [$roomName, $weaponName, $murdererName], true)) {
+        if (in_array(strtolower($clue->getName()), [
+          strtolower($roomName),
+          strtolower($weaponName),
+          strtolower($murdererName)],
+          true)) {
           return [
             'getuige' => $player->getName(),
             'weerlegging' => $clue->getName(),

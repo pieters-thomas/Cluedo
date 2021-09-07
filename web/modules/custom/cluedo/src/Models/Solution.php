@@ -45,14 +45,18 @@ class Solution
 
   #[Pure] public function equalsSuggested($room, $weapon, $murderer): bool
   {
-    if($this->room->getName() !== $room)
-    {return false;}
 
-    if($this->weapon->getName() !== $weapon)
-    {return false;}
+    if (strtolower($this->room->getName()) !== strtolower($room)) {
+      return false;
+    }
 
-    if($this->murderer->getName() !== $murderer)
-    {return false;}
+    if (strtolower($this->weapon->getName()) !== strtolower($weapon)) {
+      return false;
+    }
+
+    if (strtolower($this->murderer->getName()) !== strtolower($murderer)) {
+      return false;
+    }
 
     return true;
   }
