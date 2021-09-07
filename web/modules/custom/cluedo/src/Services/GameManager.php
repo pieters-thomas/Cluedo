@@ -95,7 +95,7 @@ class GameManager
       return $gameKey;
     }catch (Exception){
 
-      return new Exception("Unable to create new Game");
+      throw new Exception("Unable to create new Game");
     }
   }
 
