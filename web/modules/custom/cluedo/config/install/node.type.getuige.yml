@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - cluedo
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Getuige
+type: getuige
+description: 'Container met karakter profiel dat aanwijzingen van de moord bevat.'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: false

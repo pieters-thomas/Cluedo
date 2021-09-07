@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_getuige_clues
+    - node.type.getuige
+    - node.type.kamer
+    - node.type.karakter
+    - node.type.wapen
+  module:
+    - cluedo
+id: node.getuige.field_getuige_clues
+field_name: field_getuige_clues
+entity_type: node
+bundle: getuige
+label: 'Getuige Clues'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      kamer: kamer
+      karakter: karakter
+      wapen: wapen
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: kamer
+field_type: entity_reference
