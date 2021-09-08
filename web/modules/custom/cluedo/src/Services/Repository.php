@@ -23,9 +23,9 @@ class Repository
     $query->addField('n', 'type', 'type');
     $query->addField('nfr', 'title', 'name');
     $query->condition($query->orConditionGroup()
-      ->condition('type', 'room', 'LIKE')
-      ->condition('type', 'suspect', 'LIKE')
-      ->condition('type', 'weapon', 'LIKE'));
+      ->condition('type', 'kamer', 'LIKE')
+      ->condition('type', 'karakter', 'LIKE')
+      ->condition('type', 'wapen', 'LIKE'));
     $clueArray = $query->execute()->fetchAll(PDO::FETCH_ASSOC);
     $deck = new Deck();
 
@@ -61,63 +61,62 @@ class Repository
    */
   public function fetchPlayersByKey($key): array
   {
+
     $query = Drupal::database()->select('node__field_spel_sleutel', 'key');
     $query->addField('nfgp', 'field_spel_getuigen_target_id', 'playerId');
     $query->addField('nfr', 'title', 'playerName');
-    $query->addField('nfpc', 'field_player_clues_target_id', 'clueId');
+    $query->addField('nfpc', 'field_getuige_clues_target_id', 'clueId');
     $query->addField('nfr2', 'title', 'clueName');
     $query->addField('n', 'type', 'clueType');
     $query->leftJoin('node__field_spel_getuigen', 'nfgp', 'nfgp.entity_id = key.entity_id');
-    $query->leftJoin('node__field_player_profile', 'nfpp', 'nfpp.entity_id = nfgp.field_spel_getuigen_target_id');
-    $query->leftJoin('node_field_revision', 'nfr', 'nfpp.field_player_profile_target_id = nfr.nid');
-    $query->leftJoin('node__field_player_clues', 'nfpc', 'nfpc.entity_id  = nfgp.field_spel_getuigen_target_id');
-    $query->leftJoin('node_field_revision', 'nfr2', 'nfpc.field_player_clues_target_id = nfr2.nid');
-    $query->leftJoin('node', 'n', 'n.nid = nfpc.field_player_clues_target_id');
+    $query->leftJoin('node__field_getuige_profiel', 'nfpp', 'nfpp.entity_id = nfgp.field_spel_getuigen_target_id');
+    $query->leftJoin('node_field_revision', 'nfr', 'nfpp.field_getuige_profiel_target_id = nfr.nid');
+    $query->leftJoin('node__field_getuige_clues', 'nfpc', 'nfpc.entity_id  = nfgp.field_spel_getuigen_target_id');
+    $query->leftJoin('node_field_revision', 'nfr2', 'nfpc.field_getuige_clues_target_id = nfr2.nid');
+    $query->leftJoin('node', 'n', 'n.nid = nfpc.field_getuige_clues_target_id');
     $query->condition('field_spel_sleutel_value', $key, 'LIKE');
     $array = $query->execute()->fetchAll(PDO::FETCH_ASSOC);
 
-    $test = [];
-    foreach ($array as $row) {
-      $test[$row['playerName']]['name'] = $row['playerName'];
-      $test[$row['playerName']]['id'] = $row['playerId'];
-      $test[$row['playerName']]['clues'][] = new Clue($row['clueId'], $row['clueType'], $row['clueName']);
-    }
-    $players = [];
-    foreach ($test as $player) {
-      $players[] = new Player($player['id'], $player['name'], $player['clues']);
-    }
-    return $players;
+      $test = [];
+      foreach ($array as $row) {
+        $test[$row['playerName']]['name'] = $row['playerName'];
+        $test[$row['playerName']]['id'] = $row['playerId'];
+        $test[$row['playerName']]['clues'][] = new Clue($row['clueId'], $row['clueType'], $row['clueName']);
+      }
 
+
+      $players = [];
+      foreach ($test as $player) {
+        $players[] = new Player($player['id'], $player['name'], $player['clues']);
+      }
+
+      return $players;
   }
 
-  public function fetchSolutionByKey(string $gameKey)
+  public function fetchSolutionByKey(string $gameKey): Solution|string
   {
-    try {
-      $query = Drupal::database()->select('node__field_spel_sleutel', 'key');
-      $query->innerJoin('node__field_spel_kamer', 'r', 'key.entity_id = r.entity_id');
-      $query->innerJoin('node__field_spel_wapen', 'w', 'key.entity_id = w.entity_id');
-      $query->innerJoin('node__field_spel_karakter', 'm', 'key.entity_id = m.entity_id');
-      $query->innerJoin('node_field_revision', 'n1', 'r.field_spel_kamer_target_id = n1.nid ');
-      $query->innerJoin('node_field_revision', 'n2', 'w.field_spel_wapen_target_id = n2.nid ');
-      $query->innerJoin('node_field_revision', 'n3', 'm.field_spel_karakter_target_id = n3.nid ');
-      $query->addField('r', 'field_spel_kamer_target_id', 'roomId');
-      $query->addField('n1', 'title', 'roomName');
-      $query->addField('w', 'field_spel_wapen_target_id', 'weaponId');
-      $query->addField('n2', 'title', 'weaponName');
-      $query->addField('m', 'field_spel_karakter_target_id', 'murdererId');
-      $query->addField('n3', 'title', 'murdererName');
-      $query->condition('field_spel_sleutel_value', $gameKey, 'LIKE');
-      $solution = $query->execute()->fetch(PDO::FETCH_ASSOC);
 
-      return new Solution(
-        new Clue((int)$solution['roomId'], 'kamer', $solution['roomName']),
-        new Clue((int)$solution['weaponId'], 'wapen', $solution['weaponName']),
-        new Clue((int)$solution['murdererId'], 'karakter', $solution['murdererName']),
-      );
-    }catch (\Exception $e)
-    {
-      return $e->getMessage();
-    }
+    $query = Drupal::database()->select('node__field_spel_sleutel', 'key');
+    $query->innerJoin('node__field_spel_kamer', 'r', 'key.entity_id = r.entity_id');
+    $query->innerJoin('node__field_spel_wapen', 'w', 'key.entity_id = w.entity_id');
+    $query->innerJoin('node__field_spel_karakter', 'm', 'key.entity_id = m.entity_id');
+    $query->innerJoin('node_field_revision', 'n1', 'r.field_spel_kamer_target_id = n1.nid ');
+    $query->innerJoin('node_field_revision', 'n2', 'w.field_spel_wapen_target_id = n2.nid ');
+    $query->innerJoin('node_field_revision', 'n3', 'm.field_spel_karakter_target_id = n3.nid ');
+    $query->addField('r', 'field_spel_kamer_target_id', 'roomId');
+    $query->addField('n1', 'title', 'roomName');
+    $query->addField('w', 'field_spel_wapen_target_id', 'weaponId');
+    $query->addField('n2', 'title', 'weaponName');
+    $query->addField('m', 'field_spel_karakter_target_id', 'murdererId');
+    $query->addField('n3', 'title', 'murdererName');
+    $query->condition('field_spel_sleutel_value', $gameKey, 'LIKE');
+    $solution = $query->execute()->fetch(PDO::FETCH_ASSOC);
+
+    return new Solution(
+      new Clue((int)$solution['roomId'], 'kamer', $solution['roomName']),
+      new Clue((int)$solution['weaponId'], 'wapen', $solution['weaponName']),
+      new Clue((int)$solution['murdererId'], 'karakter', $solution['murdererName']),
+    );
 
   }
 }

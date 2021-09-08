@@ -38,7 +38,7 @@ class StartResource extends ResourceBase
    * @param array $serializer_formats The available serialization formats.
    * @param LoggerInterface $logger A logger instance.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats,
+  public function __construct(array           $configuration, $plugin_id, $plugin_definition, array $serializer_formats,
                               LoggerInterface $logger, GameManager $manager, Repository $repo)
   {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
@@ -74,10 +74,10 @@ class StartResource extends ResourceBase
    */
   public function get(): ResourceResponse
   {
-      $playerAmount = (int) htmlspecialchars(Drupal::request()->get('aantal'), ENT_QUOTES) ;
-      $gameKey = $this->gameManager->createNewGame($this->repo,$playerAmount);
+    $playerAmount = (int)htmlspecialchars(Drupal::request()->get('aantal'), ENT_QUOTES);
+    $gameKey = $this->gameManager->createNewGame($this->repo, $playerAmount);
 
-      return new ResourceResponse(['key'=>$gameKey]);
+    return new ResourceResponse(['key' => $gameKey]);
   }
 
 }
