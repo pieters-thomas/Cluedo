@@ -1,0 +1,103 @@
+<?php
+
+const CLUES = [
+  [
+    'type' => 'wapen',
+    'title' => 'Dolk',
+  ],
+  [
+    'type' => 'wapen',
+    'title' => 'Kandelaar',
+  ],
+  [
+    'type' => 'wapen',
+    'title' => 'Revovler',
+  ],
+  [
+    'type' => 'wapen',
+    'title' => 'Touw',
+  ],
+  [
+    'type' => 'wapen',
+    'title' => 'Lode pijp',
+  ],
+  [
+    'type' => 'wapen',
+    'title' => 'Engelse sleutel',
+  ],
+  [
+    'type' => 'kamer',
+    'title' => 'Keuken',
+  ],
+  [
+    'type' => 'kamer',
+    'title' => 'Balzaal',
+  ],
+  [
+    'type' => 'kamer',
+    'title' => 'Serre',
+  ],
+  [
+    'type' => 'kamer',
+    'title' => 'Eetkamer',
+  ],
+  [
+    'type' => 'kamer',
+    'title' => 'Biljartkamer',
+  ],
+  [
+    'type' => 'kamer',
+    'title' => 'Bibliotheek',
+  ],
+  [
+    'type' => 'kamer',
+    'title' => 'Zitkamer',
+  ],
+  [
+    'type' => 'kamer',
+    'title' => 'Hall',
+  ],
+  [
+    'type' => 'kamer',
+    'title' => 'Studeerkamer',
+  ],
+  [
+    'type' => 'karakter',
+    'title' => 'Rosa Roodhart',
+  ],
+  [
+    'type' => 'karakter',
+    'title' => 'Kolonel van Geelen',
+  ],
+  [
+    'type' => 'karakter',
+    'title' => 'Dominee Groenewoud',
+  ],
+  [
+    'type' => 'karakter',
+    'title' => 'Mw. Blauw van Draet',
+  ],
+  [
+    'type' => 'karakter',
+    'title' => 'Professor Pimpel',
+  ],
+  [
+    'type' => 'karakter',
+    'title' => 'Dokter Li-La',
+  ],
+
+];
+
+foreach (CLUES as $clue)
+{
+  $newClue = \Drupal\node\Entity\Node::create([
+    'type'=>$clue['type'],
+      'title'=>$clue['title'],
+    ]);
+  
+  $newClue->enforceIsNew();
+  try {
+    $newClue->save();
+  } catch (\Drupal\Core\Entity\EntityStorageException $e) {
+  }
+}
