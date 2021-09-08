@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_spel_wapen
+    - node.type.spel
+    - node.type.wapen
+  module:
+    - cluedo
+id: node.spel.field_spel_wapen
+field_name: field_spel_wapen
+entity_type: node
+bundle: spel
+label: 'Spel Wapen'
+description: 'Het moordwapen.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      wapen: wapen
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
