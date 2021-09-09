@@ -11,9 +11,9 @@ use Exception;
 class GameManager
 {
    private const CLUE_TYPES = [
-     'kamer'=>'kamer',
-     'wapen'=>'wapen',
-     'karakter'=>'karakter',
+     'kamer'=>'room',
+     'wapen'=>'weapon',
+     'karakter'=>'suspect',
    ];
 
    private const GETUIGEN_MAX = 6;
@@ -79,10 +79,10 @@ class GameManager
       {
 
         $node = Node::create([
-          'type' => 'getuige',
-          'title' => 'Getuige ' . $index + 1,
-          'field_getuige_profiel' =>$playerProfiles[$index]->getNodeId(),
-          'field_getuige_clues' =>$player->getClueIds(),
+          'type' => 'witness',
+          'title' => $player->getName(),
+          'field_profile' =>$playerProfiles[$index]->getNodeId(),
+          'field_clues' =>$player->getClueIds(),
 
         ]);
 
@@ -95,14 +95,13 @@ class GameManager
 
       //Create game node
       $gameNode = Node::create([
-        'type' => 'spel',
-        'title' => 'spel',
-        'field_speler' => Drupal::currentUser()->id(),
-        'field_spel_sleutel' => $gameKey,
-        'field_spel_getuigen' => $playerNodeIds,
-        'field_spel_kamer' => $solution->getRoom()->getNodeId(),
-        'field_spel_wapen' => $solution->getWeapon()->getNodeId(),
-        'field_spel_karakter' => $solution->getMurderer()->getNodeId(),
+        'type' => 'game',
+        'title' => 'Cluedo-spel',
+        'field_game_key' => $gameKey,
+        'field_witnesses' => $playerNodeIds,
+        'field_murder_room' => $solution->getRoom()->getNodeId(),
+        'field_murder_weapon' => $solution->getWeapon()->getNodeId(),
+        'field_murderer' => $solution->getMurderer()->getNodeId(),
 
       ]);
 
@@ -122,9 +121,9 @@ class GameManager
     $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $newKey = substr(str_shuffle($chars), 0, self::SLEUTEL_LENGTE);
 
-    $query = Drupal::database()->select('node__field_spel_sleutel', 'sleutels')
-      ->fields('sleutels', ['field_spel_sleutel_value'])
-      ->condition('field_spel_sleutel_value', $newKey, 'LIKE');
+    $query = Drupal::database()->select('node__field_game_key', 'sleutels')
+      ->fields('sleutels', ['field_game_key_value'])
+      ->condition('field_game_key_value', $newKey, 'LIKE');
     $keys = $query->execute()->fetch();
 
     if ($keys === false) {

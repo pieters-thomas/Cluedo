@@ -6,4 +6,4 @@ services:
     arguments: ['@database']
   cluedo.repository:
     class: Drupal\cluedo\Services\Repository
-    arguments: ['@database']
+    arguments: ['@entity_type.manager','@database']

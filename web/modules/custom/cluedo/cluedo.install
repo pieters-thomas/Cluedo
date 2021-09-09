@@ -2,102 +2,107 @@
 
 const CLUES = [
   [
-    'type' => 'wapen',
+    'type' => 'weapon',
     'title' => 'Dolk',
   ],
   [
-    'type' => 'wapen',
+    'type' => 'weapon',
     'title' => 'Kandelaar',
   ],
   [
-    'type' => 'wapen',
+    'type' => 'weapon',
     'title' => 'Revovler',
   ],
   [
-    'type' => 'wapen',
+    'type' => 'weapon',
     'title' => 'Touw',
   ],
   [
-    'type' => 'wapen',
+    'type' => 'weapon',
     'title' => 'Lode pijp',
   ],
   [
-    'type' => 'wapen',
+    'type' => 'weapon',
     'title' => 'Engelse sleutel',
   ],
   [
-    'type' => 'kamer',
+    'type' => 'room',
     'title' => 'Keuken',
   ],
   [
-    'type' => 'kamer',
+    'type' => 'room',
     'title' => 'Balzaal',
   ],
   [
-    'type' => 'kamer',
+    'type' => 'room',
     'title' => 'Serre',
   ],
   [
-    'type' => 'kamer',
+    'type' => 'room',
     'title' => 'Eetkamer',
   ],
   [
-    'type' => 'kamer',
+    'type' => 'room',
     'title' => 'Biljartkamer',
   ],
   [
-    'type' => 'kamer',
+    'type' => 'room',
     'title' => 'Bibliotheek',
   ],
   [
-    'type' => 'kamer',
+    'type' => 'room',
     'title' => 'Zitkamer',
   ],
   [
-    'type' => 'kamer',
+    'type' => 'room',
     'title' => 'Hall',
   ],
   [
-    'type' => 'kamer',
+    'type' => 'room',
     'title' => 'Studeerkamer',
   ],
   [
-    'type' => 'karakter',
+    'type' => 'suspect',
     'title' => 'Rosa Roodhart',
   ],
   [
-    'type' => 'karakter',
+    'type' => 'suspect',
     'title' => 'Kolonel van Geelen',
   ],
   [
-    'type' => 'karakter',
+    'type' => 'suspect',
     'title' => 'Dominee Groenewoud',
   ],
   [
-    'type' => 'karakter',
+    'type' => 'suspect',
     'title' => 'Mw. Blauw van Draet',
   ],
   [
-    'type' => 'karakter',
+    'type' => 'suspect',
     'title' => 'Professor Pimpel',
   ],
   [
-    'type' => 'karakter',
+    'type' => 'suspect',
     'title' => 'Dokter Li-La',
   ],
 
 ];
 
-foreach (CLUES as $clue)
+function cluedo_install()
 {
-  $newClue = \Drupal\node\Entity\Node::create([
-    'type'=>$clue['type'],
-      'title'=>$clue['title'],
+
+  foreach (CLUES as $clue) {
+    $newClue = \Drupal\node\Entity\Node::create([
+      'type' => $clue['type'],
+      'title' => $clue['title'],
     ]);
-  
-  $newClue->enforceIsNew();
-  try {
-    $newClue->save();
-  } catch (\Drupal\Core\Entity\EntityStorageException $e) {
+
+    $newClue->enforceIsNew();
+    try {
+      $newClue->save();
+    } catch (\Drupal\Core\Entity\EntityStorageException $e) {
+    }
   }
 }
+
+

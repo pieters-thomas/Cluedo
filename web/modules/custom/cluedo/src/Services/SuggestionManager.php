@@ -27,7 +27,7 @@ class SuggestionManager
           return [
             'getuige' => $player->getName(),
             'weerlegging' => $clue->getName(),
-            'type' => $clue->getType()
+//            'type' => $clue->getType()
           ];
         }
       }

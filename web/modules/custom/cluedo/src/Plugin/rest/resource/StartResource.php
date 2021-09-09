@@ -78,6 +78,7 @@ class StartResource extends ResourceBase
     $gameKey = $this->gameManager->createNewGame($this->repo, $playerAmount);
 
     return new ResourceResponse(['key' => $gameKey]);
+
   }
 
 }
