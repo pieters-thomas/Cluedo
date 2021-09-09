@@ -1,0 +1,31 @@
+uuid: def021cb-e1af-4d1b-8e12-38908b812045
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.game.field_game_key
+    - field.field.node.game.field_murder_room
+    - field.field.node.game.field_murder_weapon
+    - field.field.node.game.field_murderer
+    - field.field.node.game.field_witnesses
+    - node.type.game
+  module:
+    - user
+    - cluedo
+id: node.game.teaser
+targetEntityType: node
+bundle: game
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_game_key: true
+  field_murder_room: true
+  field_murder_weapon: true
+  field_murderer: true
+  field_witnesses: true

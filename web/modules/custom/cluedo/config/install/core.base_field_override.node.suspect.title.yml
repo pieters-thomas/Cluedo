@@ -1,0 +1,20 @@
+uuid: d8cf5b0f-c60b-46c7-a968-de5ead077083
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.suspect
+  module:
+    - cluedo
+id: node.suspect.title
+field_name: title
+entity_type: node
+bundle: suspect
+label: Naam
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

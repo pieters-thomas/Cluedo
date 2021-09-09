@@ -1,0 +1,24 @@
+uuid: 1d405c47-0865-454c-a3bf-60ba60c1f15a
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.weapon
+  module:
+    - cluedo
+id: node.weapon.promote
+field_name: promote
+entity_type: node
+bundle: weapon
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

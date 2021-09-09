@@ -1,0 +1,22 @@
+uuid: 34b9996a-dc91-47fe-9ef1-511a204342ea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_description
+    - node.type.room
+  module:
+    - text
+    - cluedo
+id: node.room.field_description
+field_name: field_description
+entity_type: node
+bundle: room
+label: Beschrijving
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

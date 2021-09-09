@@ -1,0 +1,22 @@
+uuid: 69b37a06-412a-4554-a7a8-b2c002977159
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_game_key
+    - node.type.game
+  module:
+    - text
+    - cluedo
+id: node.game.field_game_key
+field_name: field_game_key
+entity_type: node
+bundle: game
+label: Sleutel
+description: 'Unique sleutel waarmee spel kan identificeren.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

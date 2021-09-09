@@ -1,0 +1,65 @@
+uuid: 917635d2-6779-467d-9306-bb0d64f5b311
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.game.field_game_key
+    - field.field.node.game.field_murder_room
+    - field.field.node.game.field_murder_weapon
+    - field.field.node.game.field_murderer
+    - field.field.node.game.field_witnesses
+    - node.type.game
+  module:
+    - text
+    - user
+    - cluedo
+id: node.game.default
+targetEntityType: node
+bundle: game
+mode: default
+content:
+  field_game_key:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_murder_room:
+    weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_murder_weapon:
+    weight: 101
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_murderer:
+    weight: 103
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_witnesses:
+    weight: 105
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

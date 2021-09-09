@@ -1,0 +1,22 @@
+uuid: 8a8bbb4b-32eb-46ed-a339-7eb0c9bb4534
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_description
+    - node.type.suspect
+  module:
+    - text
+    - cluedo
+id: node.suspect.field_description
+field_name: field_description
+entity_type: node
+bundle: suspect
+label: Beschrijving
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

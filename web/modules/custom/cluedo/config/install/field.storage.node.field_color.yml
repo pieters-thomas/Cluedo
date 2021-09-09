@@ -1,0 +1,43 @@
+uuid: d9db3967-dee0-4986-9cd5-ad854bb362ec
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+    - cluedo
+id: node.field_color
+field_name: field_color
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: red
+      label: rood
+    -
+      value: yellow
+      label: geel
+    -
+      value: green
+      label: groen
+    -
+      value: blue
+      label: blauw
+    -
+      value: pink
+      label: roze
+    -
+      value: purple
+      label: paars
+    -
+      value: white
+      label: wit
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

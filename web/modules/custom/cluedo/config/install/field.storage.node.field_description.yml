@@ -1,0 +1,21 @@
+uuid: a618995b-c183-415f-ac00-8660e95f7529
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - text
+    - cluedo
+id: node.field_description
+field_name: field_description
+entity_type: node
+type: text
+settings:
+  max_length: 255
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

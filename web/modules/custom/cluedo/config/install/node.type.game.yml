@@ -1,0 +1,18 @@
+uuid: 720e182d-7570-4e0e-9e4d-dc621f0a2b57
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - cluedo
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Cluedo
+type: game
+description: 'Een iteratie van het cluedo spel.'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: false

@@ -1,0 +1,18 @@
+uuid: 8ec561d0-b0a5-4ea5-86f6-1be9359f9fcf
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - cluedo
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Kamer
+type: room
+description: 'Een aanwijzing naar waar de moord is gepleegd.'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: false

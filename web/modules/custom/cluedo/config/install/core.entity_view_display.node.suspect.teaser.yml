@@ -1,0 +1,25 @@
+uuid: c5622aa7-019c-4931-87a7-fa43ec33d2f4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.suspect.field_color
+    - field.field.node.suspect.field_description
+    - node.type.suspect
+  module:
+    - user
+    - cluedo
+id: node.suspect.teaser
+targetEntityType: node
+bundle: suspect
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_color: true
+  field_description: true

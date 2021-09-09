@@ -1,0 +1,29 @@
+uuid: b5529b81-f146-4af1-b662-3625ba5c7e5b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.weapon.field_description
+    - node.type.weapon
+  module:
+    - text
+    - user
+    - cluedo
+id: node.weapon.default
+targetEntityType: node
+bundle: weapon
+mode: default
+content:
+  field_description:
+    weight: 101
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }
