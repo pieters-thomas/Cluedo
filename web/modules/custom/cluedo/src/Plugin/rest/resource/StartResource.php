@@ -38,8 +38,7 @@ class StartResource extends ResourceBase
    * @param array $serializer_formats The available serialization formats.
    * @param LoggerInterface $logger A logger instance.
    */
-  public function __construct(array           $configuration, $plugin_id, $plugin_definition, array $serializer_formats,
-                              LoggerInterface $logger, GameManager $manager, Repository $repo)
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats, LoggerInterface $logger, GameManager $manager, Repository $repo)
   {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
     $this->gameManager = $manager;
@@ -78,7 +77,5 @@ class StartResource extends ResourceBase
     $gameKey = $this->gameManager->createNewGame($this->repo, $playerAmount);
 
     return new ResourceResponse(['key' => $gameKey]);
-
   }
-
 }

@@ -50,20 +50,24 @@ class AccusationResource extends ResourceBase
 
   public function post($data): ResourceResponse
   {
+    $gameKey = Drupal::request()->get('key');
 
-      $solution = $this->repo->fetchSolutionByKey(Drupal::request()->get('key'));
+    if ($this->repo->gameIsOver($gameKey)) {
+      return new ResourceResponse("Deze zaak is reeds afgesloten");
+    }
 
-      if ($solution->equalsSuggested($data['kamer'], $data['wapen'], $data['karakter']))
-      {
-        return new ResourceResponse([
-          'message' => 'Correct, goed gedaan super speurneus!',
-          'correct' => true,
-        ]);
-      }
+    $solution = $this->repo->fetchSolutionByKey($gameKey);
+
+    if ($solution->equalsSuggested($data['kamer'], $data['wapen'], $data['karakter'])) {
       return new ResourceResponse([
-        'message' => 'Helaas, dit was niet het juiste antwoord.',
-        'correct' => false,
+        'message' => 'Correct, goed gedaan super speurneus!',
+        'correct' => true,
       ]);
+    }
+    return new ResourceResponse([
+      'message' => 'Helaas, dit was niet het juiste antwoord.',
+      'correct' => false,
+    ]);
 
 
   }

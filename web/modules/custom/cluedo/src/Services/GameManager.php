@@ -97,6 +97,7 @@ class GameManager
       $gameNode = Node::create([
         'type' => 'game',
         'title' => 'Cluedo-spel',
+        'field_game_over' => false,
         'field_game_key' => $gameKey,
         'field_witnesses' => $playerNodeIds,
         'field_murder_room' => $solution->getRoom()->getNodeId(),

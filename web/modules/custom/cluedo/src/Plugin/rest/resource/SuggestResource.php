@@ -61,7 +61,15 @@ class SuggestResource extends ResourceBase
    */
   public function post($data): ResourceResponse
   {
-    $players = $this->repo->fetchPlayersByKey(Drupal::request()->get('key'));
+    $gameKey = Drupal::request()->get('key');
+
+    if ($this->repo->gameIsOver($gameKey))
+    {
+      return new ResourceResponse("Deze zaak is reeds afgesloten");
+    }
+
+
+    $players = $this->repo->fetchPlayersByKey($gameKey);
     $response = $this->suggestionManager->disproveSuggestion(
       $players,
       $data['kamer'],

@@ -23,15 +23,13 @@ class SuggestionManager
       foreach ($player->getClues() as $clue) {
         if (in_array(strtolower($clue->getName()), [strtolower($roomName), strtolower($weaponName), strtolower($murdererName)], true)) {
 
-
           return [
             'getuige' => $player->getName(),
             'weerlegging' => $clue->getName(),
-//            'type' => $clue->getType()
           ];
         }
       }
     }
-    return ['getuige' => '', 'weerlegging' => '', 'type' => ''];
+    return ['getuige' => '', 'weerlegging' => ''];
   }
 }

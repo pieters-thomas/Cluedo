@@ -13,6 +13,7 @@ class Player
    */
   private array $clues;
 
+
   /**
    * @param string $name
    * @param int $nodeId
@@ -42,6 +43,7 @@ class Player
   {
     return $this->clues;
   }
+
 
   #[Pure] public function getClueIds():array
   {
