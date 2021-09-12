@@ -11,7 +11,7 @@ const CLUES = [
   ],
   [
     'type' => 'weapon',
-    'title' => 'Revovler',
+    'title' => 'Revolver',
   ],
   [
     'type' => 'weapon',
@@ -55,7 +55,7 @@ const CLUES = [
   ],
   [
     'type' => 'room',
-    'title' => 'Hall',
+    'title' => 'Hal',
   ],
   [
     'type' => 'room',

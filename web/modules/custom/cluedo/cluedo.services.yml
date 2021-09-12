@@ -7,3 +7,5 @@ services:
   cluedo.repository:
     class: Drupal\cluedo\Services\Repository
     arguments: ['@entity_type.manager','@database']
+  cluedo.game_validator:
+    class: Drupal\cluedo\Services\GameValidator
