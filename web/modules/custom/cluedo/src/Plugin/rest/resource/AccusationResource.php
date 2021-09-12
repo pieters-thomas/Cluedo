@@ -3,10 +3,13 @@
 namespace Drupal\cluedo\Plugin\rest\resource;
 
 use Drupal;
+use Drupal\cluedo\Services\GameManager;
 use Drupal\cluedo\Services\Repository;
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\rest\Annotation\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,12 +26,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AccusationResource extends ResourceBase
 {
-  private Repository $repo;
+  private const SUCCESS_MESSAGE = 'Correct, goed gedaan super speurneus!';
+  private const FAILURE_MESSAGE = 'Helaas, dit was niet het juiste antwoord.';
+  private const ON_GAME_OVER_MESSAGE = 'Deze zaak is reeds afgesloten.';
 
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats, LoggerInterface $logger, Repository $repo)
+  private Repository $repo;
+  private GameManager $gameManager;
+
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats, LoggerInterface $logger, Repository $repo, GameManager $gameManager)
   {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
     $this->repo = $repo;
+    $this->gameManager = $gameManager;
   }
 
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): ResourceBase|AccusationResource|static
@@ -38,37 +47,64 @@ class AccusationResource extends ResourceBase
      */
     $repo = $container->get('cluedo.repository');
 
+    /** @var GameManager $gameManager */
+    $gameManager = $container->get('cluedo.game_manager');
+
     return new static(
       $configuration,
       $plugin_id,
       $plugin_definition,
       $container->getParameter('serializer.formats'),
-      $container->get('logger.factory')->get('custom_rest'),
-      $repo
+      $container->get('logger.factory')?->get('custom_rest'),
+      $repo,
+      $gameManager,
     );
   }
 
+
+  /**
+   * @throws EntityStorageException
+   * @throws Exception
+   */
   public function post($data): ResourceResponse
   {
-    $gameKey = Drupal::request()->get('key');
+    $game = $this->repo->fetchGame(Drupal::request()->get('key'));
 
-    if ($this->repo->gameIsOver($gameKey)) {
-      return new ResourceResponse("Deze zaak is reeds afgesloten");
+    if (!$game) {
+      return new ResourceResponse("Spel niet gevonden");
     }
 
-    $solution = $this->repo->fetchSolutionByKey($gameKey);
+    if ($game->isGameOver()) {
+      return new ResourceResponse(self::ON_GAME_OVER_MESSAGE);
+    }
 
-    if ($solution->equalsSuggested($data['kamer'], $data['wapen'], $data['karakter'])) {
+    //Updates node in database with game_over = true
+    $this->gameManager->endGame($game);
+
+    //check if accusation matches solution
+    $isCorrect = $game->getSolution()->verifyAccusation($data['wapen'], $data['kamer'], $data['karakter']);
+
+
+    $solutionArray = [
+      'kamer' => $game->getSolution()->getRoom()->getName(),
+      'wapen' => $game->getSolution()->getWeapon()->getName(),
+      'karakter' => $game->getSolution()->getSuspect()->getName(),
+    ];
+
+
+    if ($isCorrect) {
       return new ResourceResponse([
-        'message' => 'Correct, goed gedaan super speurneus!',
+        'message' => self::SUCCESS_MESSAGE,
         'correct' => true,
+        'oplossing' => $solutionArray,
       ]);
     }
+
     return new ResourceResponse([
-      'message' => 'Helaas, dit was niet het juiste antwoord.',
+      'message' => self::FAILURE_MESSAGE,
       'correct' => false,
+      'oplossing' => $solutionArray,
     ]);
-
-
   }
+
 }

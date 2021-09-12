@@ -27,7 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class StartResource extends ResourceBase
 {
   private GameManager $gameManager;
-  private Repository $repo;
+  private Repository $repository;
 
   /**
    * Constructs a new ExampleGetRestResource object.
@@ -38,11 +38,11 @@ class StartResource extends ResourceBase
    * @param array $serializer_formats The available serialization formats.
    * @param LoggerInterface $logger A logger instance.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats, LoggerInterface $logger, GameManager $manager, Repository $repo)
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats, LoggerInterface $logger, GameManager $manager, Repository $repository)
   {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
     $this->gameManager = $manager;
-    $this->repo = $repo;
+    $this->repository = $repository;
   }
 
   /**
@@ -50,18 +50,17 @@ class StartResource extends ResourceBase
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): ResourceBase|SuggestResource|ContainerFactoryPluginInterface|static
   {
-    /**
-     * @var GameManager $manager
-     * @var Repository $repo
-     */
+    /** @var GameManager $manager */
     $manager = $container->get('cluedo.game_manager');
-    $repo = $container->get('cluedo.repository');
+
+    /** @var Repository $repository */
+    $repository = $container->get('cluedo.repository');
+
     return new static(
       $configuration, $plugin_id, $plugin_definition,
       $container->getParameter('serializer.formats'),
       $container->get('logger.factory')->get('example_node_rest'),
-      $manager,
-      $repo
+      $manager, $repository
     );
   }
 
@@ -73,8 +72,12 @@ class StartResource extends ResourceBase
    */
   public function get(): ResourceResponse
   {
-    $playerAmount = (int)htmlspecialchars(Drupal::request()->get('aantal'), ENT_QUOTES);
-    $gameKey = $this->gameManager->createNewGame($this->repo, $playerAmount);
+    $playerAmount = (int) htmlspecialchars(Drupal::request()->get('aantal'), ENT_QUOTES);
+    $gameKey = $this->gameManager->createNewGame(
+      htmlspecialchars($playerAmount, ENT_QUOTES),
+      $this->repository->fetchAllClues(),
+      $this->repository,
+    );
 
     return new ResourceResponse(['key' => $gameKey]);
   }

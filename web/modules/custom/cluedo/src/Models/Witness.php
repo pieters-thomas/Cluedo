@@ -2,14 +2,15 @@
 
 namespace Drupal\cluedo\Models;
 
+use Drupal\cluedo\Models\Clues\CluedoClue;
 use JetBrains\PhpStorm\Pure;
 
-class Player
+class Witness
 {
   private int $nodeId;
   private string $name;
   /**
-   * @var Clue[]
+   * @var CluedoClue[]
    */
   private array $clues;
 
@@ -17,7 +18,7 @@ class Player
   /**
    * @param string $name
    * @param int $nodeId
-   * @param Clue[] $clues
+   * @param CluedoClue[] $clues
    */
   public function __construct( int $nodeId, string $name, array $clues = [])
   {
@@ -37,13 +38,12 @@ class Player
   }
 
   /**
-   * @return Clue[]
+   * @return CluedoClue[]
    */
   public function getClues(): array
   {
     return $this->clues;
   }
-
 
   #[Pure] public function getClueIds():array
   {
@@ -55,15 +55,7 @@ class Player
     return $clueIds;
   }
 
-  /**
-   * @param int $nodeId
-   */
-  public function setNodeId(int $nodeId): void
-  {
-    $this->nodeId = $nodeId;
-  }
-
-  public function addClue(Clue $clue): void
+  public function addClue(CluedoClue $clue): void
   {
     $this->clues[] = $clue;
   }

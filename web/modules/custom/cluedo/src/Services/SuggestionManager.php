@@ -2,14 +2,14 @@
 
 namespace Drupal\cluedo\Services;
 
-use Drupal\cluedo\Models\Player;
+use Drupal\cluedo\Models\Witness;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
 class SuggestionManager
 {
   /**
-   * @param Player[] $players
+   * @param Witness[] $witnesses
    * @param string $roomName
    * @param string $weaponName
    * @param string $murdererName
@@ -17,19 +17,23 @@ class SuggestionManager
    */
   #[Pure]
   #[ArrayShape(['player' => "string", 'disproves' => "string", 'type' => "string"])]
-  public function disproveSuggestion(array $players, string $roomName, string $weaponName, string $murdererName): array
+  public function disproveSuggestion(array $witnesses, string $roomName, string $weaponName, string $murdererName): array
   {
-    foreach ($players as $player) {
-      foreach ($player->getClues() as $clue) {
+    foreach ($witnesses as $witness) {
+      foreach ($witness->getClues() as $clue)
+      {
         if (in_array(strtolower($clue->getName()), [strtolower($roomName), strtolower($weaponName), strtolower($murdererName)], true)) {
 
           return [
-            'getuige' => $player->getName(),
+            'getuige' => $witness->getName(),
             'weerlegging' => $clue->getName(),
           ];
         }
       }
     }
-    return ['getuige' => '', 'weerlegging' => ''];
+    return [
+      'getuige' => '',
+      'weerlegging' => '',
+      ];
   }
 }

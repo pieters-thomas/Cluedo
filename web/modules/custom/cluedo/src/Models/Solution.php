@@ -2,62 +2,49 @@
 
 namespace Drupal\cluedo\Models;
 
+use Drupal\cluedo\Models\Clues\Room;
+use Drupal\cluedo\Models\Clues\Suspect;
+use Drupal\cluedo\Models\Clues\Weapon;
 use JetBrains\PhpStorm\Pure;
 
 class Solution
 {
+  private Weapon $weapon;
+  private Room $room;
+  private Suspect $suspect;
 
-  private Clue $room;
-  private Clue $weapon;
-  private Clue $murderer;
-
-  public function __construct(Clue $room, Clue $weapon, Clue $murderer)
+  public function __construct(Weapon $weapon, Room $room, Suspect $suspect)
   {
-    $this->room = $room;
     $this->weapon = $weapon;
-    $this->murderer = $murderer;
+    $this->room = $room;
+    $this->suspect = $suspect;
   }
 
-  /**
-   * @return Clue
-   */
-  public function getRoom(): Clue
-  {
-    return $this->room;
-  }
 
-  /**
-   * @return Clue
-   */
-  public function getWeapon(): Clue
+  public function getWeapon(): Weapon
   {
     return $this->weapon;
   }
 
-  /**
-   * @return Clue
-   */
-  public function getMurderer(): Clue
+
+  public function getRoom(): Room
   {
-    return $this->murderer;
+    return $this->room;
   }
 
 
-  #[Pure] public function equalsSuggested($room, $weapon, $murderer): bool
+  public function getSuspect(): Suspect
   {
+    return $this->suspect;
+  }
 
-    if (strtolower($this->room->getName()) !== strtolower($room)) {
-      return false;
-    }
 
-    if (strtolower($this->weapon->getName()) !== strtolower($weapon)) {
-      return false;
-    }
-
-    if (strtolower($this->murderer->getName()) !== strtolower($murderer)) {
-      return false;
-    }
-
-    return true;
+  #[Pure] public function verifyAccusation($weaponName, $roomName, $suspectName): bool
+  {
+    return (
+      $weaponName === $this->weapon->getName()
+      && $roomName === $this->room->getName()
+      && $suspectName === $this->suspect->getName()
+    );
   }
 }

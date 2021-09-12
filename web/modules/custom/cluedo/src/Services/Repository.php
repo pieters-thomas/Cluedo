@@ -2,15 +2,20 @@
 
 namespace Drupal\cluedo\Services;
 
-use Drupal\cluedo\Models\Clue;
+use Drupal\cluedo\Models\Cluedo;
+use Drupal\cluedo\Models\Clues\CluedoClue;
+use Drupal\cluedo\Models\Clues\Room;
+use Drupal\cluedo\Models\Clues\Suspect;
+use Drupal\cluedo\Models\Clues\Weapon;
 use Drupal\cluedo\Models\Deck;
-use Drupal\cluedo\Models\Player;
+use Drupal\cluedo\Models\Witness;
 use Drupal\cluedo\Models\Solution;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Exception;
 
 class Repository
 {
@@ -29,86 +34,100 @@ class Repository
   /**
    * Fetches all clues/cards and returns them as Deck object
    * @return Deck
+   * @throws Exception
    */
   public function fetchAllClues(): Deck
   {
     $type = ['weapon', 'room', 'suspect'];
     $query = $this->nodeStorage->getQuery();
     $query->condition('type', $type, 'IN');
-    $clueArray = $query->execute() ? $this->nodeStorage->loadMultiple($query->execute()) : [];
 
-    $deck = new Deck();
+    $clueEntities = $this->nodeStorage->loadMultiple($query->execute()) ?? [];
+    $clueArray = [];
 
-    foreach ($clueArray as $clue) {
-      $deck->addCard(new Clue($clue->id(), $clue->bundle(), $clue->label()));
+    foreach ($clueEntities as $entity) {
+      $clueArray[] = $this->entityToClue($entity);
     }
 
-    return $deck;
+    return new Deck($clueArray);
   }
 
   /**
-   * Fetches an array of player objects from a specific game, based on a gameKey
-   * @param $gameKey
-   * @return Player[]
+   * @throws Exception
    */
-  public function fetchPlayersByKey($gameKey): array
-  {
-    $game = $this->fetchGameEntity($gameKey);
-
-    $players = $game? $game->get('field_witnesses')->referencedEntities() : [];
-    $playersArray = [];
-
-    foreach ($players as $player)
-    {
-      $clues = $player->get('field_clues')->referencedEntities();
-      $cluesArray = [];
-
-      foreach ($clues as $clue) {
-        $cluesArray[] = new Clue($clue->id(), $clue->bundle(), $clue->label());
-      }
-
-      $playersArray[] = new Player($player->id(), $player->label(), $cluesArray);
-    }
-    return $playersArray;
-
-  }
-
-  public function fetchSolutionByKey(string $gameKey): ?Solution
-  {
-    $game = $this->fetchGameEntity($gameKey);
-
-    if (!$game)
-    {return null;}
-
-    $room = reset($game->get('field_murder_room')->referencedEntities());
-    $weapon = reset($game->get('field_murder_weapon')->referencedEntities());
-    $murderer = reset($game->get('field_murderer')->referencedEntities());
-
-    return new Solution(
-      new Clue($room->id(),$room->bundle(),$room->label()),
-      new Clue($weapon->id(),$weapon->bundle(),$weapon->label()),
-      new Clue($murderer->id(),$murderer->bundle(),$murderer->label()),
-    );
-
-  }
-
-  public function gameIsOver($key): bool
-  {
-    $query = $this->nodeStorage->getQuery();
-    $query->condition('field_game_key', $key, 'LIKE');
-    $query->condition('field_game_over', true, '=');
-
-    return (bool)$query->execute();
-
-  }
-
-  public function fetchGameEntity($gameKey): ?EntityInterface
+  public function fetchGame($gameKey): ?Cluedo
   {
     $gameQuery = $this->nodeStorage->getQuery();
     $gameQuery->condition('field_game_key', $gameKey, 'LIKE');
     $gameQuery = $gameQuery->execute();
 
-    return $this->nodeStorage->load(reset($gameQuery));
+    $game = $this->nodeStorage->load(reset($gameQuery));
+
+    if (!$game) {
+      return null;
+    }
+
+    return new Cluedo(
+      $gameKey,
+      $game->id(),
+      $game->get('field_game_over')->getValue()[0]["value"],
+      $this->extractSolution($game),
+      $this->extractWitnesses($game),
+    );
   }
+
+
+  /**
+   * @throws Exception
+   */
+  public function entityToClue(EntityInterface $clueEntity): CluedoClue
+  {
+    switch ($clueEntity->bundle()) {
+      case 'weapon':
+        return new Weapon($clueEntity->id(), $clueEntity->label());
+      case 'room':
+        return new Room($clueEntity->id(), $clueEntity->label());
+      case 'suspect':
+        return new Suspect($clueEntity->id(), $clueEntity->label(), $clueEntity->get('field_color')->getValue()[0]["value"]);
+    }
+    throw new Exception("Could not convert entity to clue object");
+  }
+
+  /**
+   * @throws Exception
+   */
+  public function extractWitnesses(EntityInterface $game): array
+  {
+    $witnessEntities = $game->get('field_witnesses')->referencedEntities();
+    $witnesses = [];
+
+    foreach ($witnessEntities as $entity) {
+
+      $clueEntities = $entity->get('field_clues')->referencedEntities();
+      $cluesArray = [];
+
+      foreach ($clueEntities as $clueEntity) {
+        $cluesArray[] = $this->entityToClue($clueEntity);
+      }
+
+      $witnesses[] = new Witness($entity->id(), $entity->label(), $cluesArray);
+    }
+
+    return $witnesses;
+  }
+
+  public function extractSolution(EntityInterface $game): Solution
+  {
+    $room = reset($game->get('field_murder_room')->referencedEntities());
+    $weapon = reset($game->get('field_murder_weapon')->referencedEntities());
+    $murderer = reset($game->get('field_murderer')->referencedEntities());
+
+    return new Solution(
+      new Weapon($room->id(), $room->label()),
+      new Room($weapon->id(), $weapon->label()),
+      new Suspect($murderer->id(), $murderer->label(), $murderer->get('field_color')->getValue()[0]["value"]),
+    );
+  }
+
 }
 
