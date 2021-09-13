@@ -1,0 +1,22 @@
+uuid: 40f16a5a-95a6-4a27-9af4-2f223d808bb1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_description
+    - node.type.weapon
+  module:
+    - text
+    - cluedo
+id: node.weapon.field_description
+field_name: field_description
+entity_type: node
+bundle: weapon
+label: Beschrijving
+description: 'Een korte beschrijving.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

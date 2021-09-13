@@ -2,22 +2,35 @@
 
 namespace Drupal\cluedo\Models;
 
+use Drupal\cluedo\Models\Clues\CluedoClue;
+use Drupal\cluedo\Models\Clues\Room;
+use Drupal\cluedo\Models\Clues\Suspect;
+use Drupal\cluedo\Models\Clues\Weapon;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 
 class Deck
 {
   /**
-   * @var Clue[]
+   * @var CluedoClue[]
    */
-  private array $cards = [];
+  private array $cards;
+
+  /**
+   * @param CluedoClue[] $cards
+   */
+  public function __construct(array $cards)
+  {
+    $this->cards = $cards;
+  }
+
 
   public function shuffleDeck():void
   {
     shuffle($this->cards);
   }
 
-  public function addCard(Clue $clue): void
+  public function addCard(CluedoClue $clue): void
   {
     $this->cards[] = $clue;
   }
@@ -25,37 +38,67 @@ class Deck
   /**
    * @throws Exception
    */
-  public function drawFirstOfType(string $type): Clue
+  public function drawWeapon(): ?Weapon
   {
     foreach ($this->cards as $index=>$card)
     {
-      if ($card->getType() === $type)
+      if ($card instanceof Weapon)
       {
         $draw = array_splice($this->cards,$index,1);
         return $draw[0];
       }
     }
-    throw new Exception("No card of type found in deck");
+    return null;
   }
 
   /**
-   * @return Clue[]
+   * @throws Exception
    */
-  #[Pure] public function getAllClueOfType(string $type): array
+  public function drawRoom(): ?Room
   {
-    $clues = [];
-    foreach ($this->cards as $card)
+    foreach ($this->cards as $index=>$card)
     {
-      if ($card->getType() === $type)
+      if ($card instanceof Room)
       {
-        $clues[] = $card;
+        $draw = array_splice($this->cards,$index,1);
+        return $draw[0];
       }
     }
-    return $clues;
+    return null;
+  }
+
+  public function drawSuspect(): ?Suspect
+  {
+    foreach ($this->cards as $index=>$card)
+    {
+      if ($card instanceof Suspect)
+      {
+        $draw = array_splice($this->cards,$index,1);
+        return $draw[0];
+      }
+    }
+    return null;
   }
 
   /**
-   * @return Clue[]
+   * @return Suspect[]
+   */
+  #[Pure] public function getAllSuspects(): array
+  {
+   $suspects = [];
+
+    foreach ($this->cards as $card)
+    {
+      if ($card instanceof Suspect)
+      {
+        $suspects[] = $card;
+      }
+    }
+    return $suspects;
+  }
+
+  /**
+   * @return CluedoClue[]
    */
   public function getCards(): array
   {

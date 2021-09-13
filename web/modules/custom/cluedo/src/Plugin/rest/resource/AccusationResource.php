@@ -3,10 +3,15 @@
 namespace Drupal\cluedo\Plugin\rest\resource;
 
 use Drupal;
+use Drupal\cluedo\Services\GameManager;
 use Drupal\cluedo\Services\Repository;
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\rest\Annotation\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
+use Exception;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a resource that processes a suggestion and returns if/how disproved
@@ -21,19 +26,85 @@ use Drupal\rest\ResourceResponse;
  */
 class AccusationResource extends ResourceBase
 {
+  private const SUCCESS_MESSAGE = 'Correct, goed gedaan super speurneus!';
+  private const FAILURE_MESSAGE = 'Helaas, dit was niet het juiste antwoord.';
+  private const ON_GAME_OVER_MESSAGE = 'Deze zaak is reeds afgesloten.';
+
+  private Repository $repo;
+  private GameManager $gameManager;
+
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats, LoggerInterface $logger, Repository $repo, GameManager $gameManager)
+  {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
+    $this->repo = $repo;
+    $this->gameManager = $gameManager;
+  }
+
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): ResourceBase|AccusationResource|static
+  {
+    /**
+     * @var Repository $repo
+     */
+    $repo = $container->get('cluedo.repository');
+
+    /** @var GameManager $gameManager */
+    $gameManager = $container->get('cluedo.game_manager');
+
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->getParameter('serializer.formats'),
+      $container->get('logger.factory')?->get('custom_rest'),
+      $repo,
+      $gameManager,
+    );
+  }
+
+
+  /**
+   * @throws EntityStorageException
+   * @throws Exception
+   */
   public function post($data): ResourceResponse
   {
-    $repo = new Repository();
-    $solution = $repo->fetchSolutionByKey(Drupal::request()->get('key'));
-    if ($solution->equalsSuggested($data['room'], $data['weapon'], $data['murderer'])) {
-      return new ResourceResponse([
-        'outcome' => 'You win!',
-        'message' => 'Well done super sleuth you\'ve cracked the case',
-        ]);
+    $game = $this->repo->fetchGame(Drupal::request()->get('key'));
+
+    if (!$game) {
+      return new ResourceResponse("Spel niet gevonden");
     }
-    return new ResourceResponse([
-      'outcome' => 'Game over',
-      'message' => 'Looks like you didn\'t quite figure it out.',
+
+    if ($game->isGameOver()) {
+      return new ResourceResponse(self::ON_GAME_OVER_MESSAGE);
+    }
+
+    //Updates node in database with game_over = true
+    $this->gameManager->endGame($game);
+
+    //check if accusation matches solution
+    $isCorrect = $game->getSolution()->verifyAccusation( $data['kamer'], $data['wapen'], $data['karakter']);
+
+
+    $solutionArray = [
+      'kamer' => $game->getSolution()->getRoom()->getName(),
+      'wapen' => $game->getSolution()->getWeapon()->getName(),
+      'karakter' => $game->getSolution()->getSuspect()->getName(),
+    ];
+
+
+    if ($isCorrect) {
+      return new ResourceResponse([
+        'message' => self::SUCCESS_MESSAGE,
+        'correct' => true,
+        'oplossing' => $solutionArray,
       ]);
+    }
+
+    return new ResourceResponse([
+      'message' => self::FAILURE_MESSAGE,
+      'correct' => false,
+      'oplossing' => $solutionArray,
+    ]);
   }
+
 }

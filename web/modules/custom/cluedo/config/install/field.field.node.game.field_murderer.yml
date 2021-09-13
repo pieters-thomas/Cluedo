@@ -1,0 +1,31 @@
+uuid: 68cee926-c998-4129-a1a2-150bcab6d853
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_murderer
+    - node.type.game
+    - node.type.suspect
+  module:
+    - cluedo
+id: node.game.field_murderer
+field_name: field_murderer
+entity_type: node
+bundle: game
+label: Moordenaar
+description: 'De persoon die de moord pleegde.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      suspect: suspect
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

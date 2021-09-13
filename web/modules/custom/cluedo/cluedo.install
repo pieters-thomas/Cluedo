@@ -1,0 +1,122 @@
+<?php
+
+use Drupal\Core\Entity\EntityStorageException;
+use Drupal\node\Entity\Node;
+
+const CLUES = [
+  [
+    'type' => 'weapon',
+    'title' => 'Dolk',
+  ],
+  [
+    'type' => 'weapon',
+    'title' => 'Kandelaar',
+  ],
+  [
+    'type' => 'weapon',
+    'title' => 'Revolver',
+  ],
+  [
+    'type' => 'weapon',
+    'title' => 'Touw',
+  ],
+  [
+    'type' => 'weapon',
+    'title' => 'Lode pijp',
+  ],
+  [
+    'type' => 'weapon',
+    'title' => 'Engelse sleutel',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Keuken',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Balzaal',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Serre',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Eetkamer',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Biljartkamer',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Bibliotheek',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Zitkamer',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Hal',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Studeerkamer',
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Rosa Roodhart',
+    'color' => 'red'
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Kolonel van Geelen',
+    'color' => 'yellow'
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Dominee Groenewoud',
+    'color' => 'green'
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Mw. Blauw van Draet',
+    'color' => 'blue'
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Professor Pimpel',
+    'color' => 'purple'
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Dokter Li-La',
+    'color' => 'pink'
+  ],
+
+];
+
+/**
+ * @throws EntityStorageException
+ */
+function cluedo_install()
+{
+
+  foreach (CLUES as $clue) {
+    $newClue = Node::create([
+      'type' => $clue['type'],
+      'title' => $clue['title'],
+    ]);
+
+    if ($clue['color']) {
+      $newClue->set('field_color', $clue['color']);
+    }
+
+    $newClue->enforceIsNew();
+    $newClue->save();
+
+  }
+}
+
+

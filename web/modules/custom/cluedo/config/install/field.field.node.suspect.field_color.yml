@@ -1,0 +1,24 @@
+uuid: 4625915b-b2af-4c78-9333-c5e4ff3918df
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_color
+    - node.type.suspect
+  module:
+    - options
+    - cluedo
+id: node.suspect.field_color
+field_name: field_color
+entity_type: node
+bundle: suspect
+label: Kleur
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: white
+default_value_callback: ''
+settings: {  }
+field_type: list_string

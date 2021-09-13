@@ -1,0 +1,31 @@
+uuid: 8cafb1ae-447e-4309-9764-c50107caea2e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_profile
+    - node.type.suspect
+    - node.type.witness
+  module:
+    - cluedo
+id: node.witness.field_profile
+field_name: field_profile
+entity_type: node
+bundle: witness
+label: 'Getuige Profiel'
+description: 'Een getuige komt telkens overeen met een verdachte.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      suspect: suspect
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,25 @@
+uuid: 0f9f6474-bc2c-4ed2-a861-36e310e3a62f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.witness.field_clues
+    - field.field.node.witness.field_profile
+    - node.type.witness
+  module:
+    - user
+    - cluedo
+id: node.witness.teaser
+targetEntityType: node
+bundle: witness
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_clues: true
+  field_profile: true

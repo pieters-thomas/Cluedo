@@ -1,0 +1,31 @@
+uuid: a1e785c7-5ebb-48b7-8e47-78d66fc30c59
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_murder_weapon
+    - node.type.game
+    - node.type.weapon
+  module:
+    - cluedo
+id: node.game.field_murder_weapon
+field_name: field_murder_weapon
+entity_type: node
+bundle: game
+label: 'Moord Wapen'
+description: 'Het wapen waarmee het slachtoffer is vermoord.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      weapon: weapon
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

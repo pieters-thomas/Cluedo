@@ -1,0 +1,23 @@
+uuid: 15c568e9-1dca-460a-b260-d7ff275e010d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.room.field_description
+    - node.type.room
+  module:
+    - user
+    - cluedo
+id: node.room.teaser
+targetEntityType: node
+bundle: room
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_description: true

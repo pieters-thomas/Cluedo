@@ -9,6 +9,8 @@ use Drupal\rest\Annotation\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
 use Exception;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a resource that processes a suggestion and returns if/how disproved
@@ -23,6 +25,35 @@ use Exception;
  */
 class SuggestResource extends ResourceBase
 {
+  private Repository $repo;
+  private SuggestionManager $suggestionManager;
+
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializer_formats, LoggerInterface $logger, Repository $repo, SuggestionManager $suggestionManager)
+  {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
+    $this->repo = $repo;
+    $this->suggestionManager = $suggestionManager;
+  }
+
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): ResourceBase|AccusationResource|static
+  {
+    /**
+     * @var Repository $repo
+     * @var SuggestionManager $suggestionManager
+     */
+    $repo = $container->get('cluedo.repository');
+    $suggestionManager = $container->get('cluedo.suggestion_manager');
+
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->getParameter('serializer.formats'),
+      $container->get('logger.factory')->get('custom_rest'),
+      $repo,
+      $suggestionManager
+    );
+  }
 
   /**
    * handles POST request.
@@ -30,18 +61,23 @@ class SuggestResource extends ResourceBase
    */
   public function post($data): ResourceResponse
   {
+      $game = $this->repo->fetchGame(Drupal::request()->get('key'));
 
-    $repo = new Repository();
-    $suggestionManager = new SuggestionManager();
+      if (!$game) {
+        return new ResourceResponse("Spel niet gevonden");
+      }
 
-    $players = $repo->fetchPlayersByKey(Drupal::request()->get('key'));
-    $response = $suggestionManager->disproveSuggestion(
-      $players,
-      $data['room'],
-      $data['weapon'],
-      $data['murderer']
-    );
+      if ($game->isGameOver()) {
+        return new ResourceResponse("Deze zaak is reeds afgesloten");
+      }
 
-    return new ResourceResponse($response);
+      $response = $this->suggestionManager->disproveSuggestion(
+        $game->getWitnesses(),
+        $data['kamer'],
+        $data['wapen'],
+        $data['karakter']
+      );
+
+      return new ResourceResponse($response);
   }
 }

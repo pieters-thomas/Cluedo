@@ -1,0 +1,38 @@
+uuid: 3225ccd9-6d0d-4940-a4f3-ad405024a041
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.suspect.field_color
+    - field.field.node.suspect.field_description
+    - node.type.suspect
+  module:
+    - options
+    - text
+    - user
+    - cluedo
+id: node.suspect.default
+targetEntityType: node
+bundle: suspect
+mode: default
+content:
+  field_color:
+    weight: 102
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_description:
+    weight: 101
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

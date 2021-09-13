@@ -2,58 +2,49 @@
 
 namespace Drupal\cluedo\Models;
 
+use Drupal\cluedo\Models\Clues\Room;
+use Drupal\cluedo\Models\Clues\Suspect;
+use Drupal\cluedo\Models\Clues\Weapon;
 use JetBrains\PhpStorm\Pure;
 
 class Solution
 {
+  private Room $room;
+  private Weapon $weapon;
+  private Suspect $suspect;
 
-  private Clue $room;
-  private Clue $weapon;
-  private Clue $murderer;
-
-  public function __construct(Clue $room, Clue $weapon, Clue $murderer)
+  public function __construct(Room $room, Weapon $weapon, Suspect $suspect)
   {
     $this->room = $room;
     $this->weapon = $weapon;
-    $this->murderer = $murderer;
+    $this->suspect = $suspect;
   }
 
-  /**
-   * @return Clue
-   */
-  public function getRoom(): Clue
-  {
-    return $this->room;
-  }
 
-  /**
-   * @return Clue
-   */
-  public function getWeapon(): Clue
+  public function getWeapon(): Weapon
   {
     return $this->weapon;
   }
 
-  /**
-   * @return Clue
-   */
-  public function getMurderer(): Clue
+
+  public function getRoom(): Room
   {
-    return $this->murderer;
+    return $this->room;
   }
 
 
-  #[Pure] public function equalsSuggested($room, $weapon, $murderer): bool
+  public function getSuspect(): Suspect
   {
-    if($this->room->getName() !== $room)
-    {return false;}
+    return $this->suspect;
+  }
 
-    if($this->weapon->getName() !== $weapon)
-    {return false;}
 
-    if($this->murderer->getName() !== $murderer)
-    {return false;}
-
-    return true;
+  #[Pure] public function verifyAccusation( $roomName, $weaponName, $suspectName): bool
+  {
+    return (
+      $roomName === $this->room->getName()
+      && $weaponName === $this->weapon->getName()
+      && $suspectName === $this->suspect->getName()
+    );
   }
 }

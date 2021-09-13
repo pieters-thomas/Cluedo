@@ -2,34 +2,38 @@
 
 namespace Drupal\cluedo\Services;
 
-use Drupal\cluedo\Models\Player;
+use Drupal\cluedo\Models\Witness;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
 class SuggestionManager
 {
   /**
-   * @param Player[] $players
+   * @param Witness[] $witnesses
    * @param string $roomName
    * @param string $weaponName
    * @param string $murdererName
    * @return array
    */
-   #[Pure]
-   #[ArrayShape(['player' => "string", 'disproves' => "string", 'type' => "string"])]
-   public function disproveSuggestion(array $players, string $roomName, string $weaponName, string $murdererName): array
+  #[Pure]
+  #[ArrayShape(['player' => "string", 'disproves' => "string", 'type' => "string"])]
+  public function disproveSuggestion(array $witnesses, string $roomName, string $weaponName, string $murdererName): array
   {
-    foreach ($players as $player) {
-      foreach ($player->getClues() as $clue) {
-        if (in_array($clue->getName(), [$roomName, $weaponName, $murdererName], true)) {
+    foreach ($witnesses as $witness) {
+      foreach ($witness->getClues() as $clue)
+      {
+        if (in_array(strtolower($clue->getName()), [strtolower($roomName), strtolower($weaponName), strtolower($murdererName)], true)) {
+
           return [
-            'player' => $player->getName(),
-            'disproves' => $clue->getName(),
-            'type' => $clue->getType()
+            'getuige' => $witness->getName(),
+            'weerlegging' => $clue->getName(),
           ];
         }
       }
     }
-    return ['player' => '', 'disproves' => '', 'type' => ''];
+    return [
+      'getuige' => '',
+      'weerlegging' => '',
+      ];
   }
 }

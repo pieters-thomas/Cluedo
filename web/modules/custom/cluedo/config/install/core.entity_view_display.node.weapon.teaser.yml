@@ -1,0 +1,23 @@
+uuid: df422587-0f99-4f3a-b9f7-94b1a3602520
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.weapon.field_description
+    - node.type.weapon
+  module:
+    - user
+    - cluedo
+id: node.weapon.teaser
+targetEntityType: node
+bundle: weapon
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_description: true

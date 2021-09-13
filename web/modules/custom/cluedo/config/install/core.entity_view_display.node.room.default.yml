@@ -1,0 +1,29 @@
+uuid: 4de61fb1-83c2-4a76-a3d4-fb2587fbaa30
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.room.field_description
+    - node.type.room
+  module:
+    - text
+    - user
+    - cluedo
+id: node.room.default
+targetEntityType: node
+bundle: room
+mode: default
+content:
+  field_description:
+    weight: 101
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

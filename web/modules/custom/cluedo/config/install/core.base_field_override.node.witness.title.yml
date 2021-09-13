@@ -1,0 +1,20 @@
+uuid: 471cb987-702b-4dc2-8138-f0b52878d5e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.witness
+  module:
+    - cluedo
+id: node.witness.title
+field_name: title
+entity_type: node
+bundle: witness
+label: Naam
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
