@@ -9,14 +9,14 @@ use JetBrains\PhpStorm\Pure;
 
 class Solution
 {
-  private Weapon $weapon;
   private Room $room;
+  private Weapon $weapon;
   private Suspect $suspect;
 
-  public function __construct(Weapon $weapon, Room $room, Suspect $suspect)
+  public function __construct(Room $room, Weapon $weapon, Suspect $suspect)
   {
-    $this->weapon = $weapon;
     $this->room = $room;
+    $this->weapon = $weapon;
     $this->suspect = $suspect;
   }
 
@@ -39,11 +39,11 @@ class Solution
   }
 
 
-  #[Pure] public function verifyAccusation($weaponName, $roomName, $suspectName): bool
+  #[Pure] public function verifyAccusation( $roomName, $weaponName, $suspectName): bool
   {
     return (
-      $weaponName === $this->weapon->getName()
-      && $roomName === $this->room->getName()
+      $roomName === $this->room->getName()
+      && $weaponName === $this->weapon->getName()
       && $suspectName === $this->suspect->getName()
     );
   }

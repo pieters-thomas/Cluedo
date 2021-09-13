@@ -29,19 +29,7 @@ class GameManager
   {
 
     $gameKey = $this->generateUniqueKey($repository);
-
-    //Draws and removes clue of each type from deck:
-
     $deck->shuffleDeck();
-
-    $room = $deck->drawRoom();
-    $weapon = $deck->drawWeapon();
-    $suspect = $deck->drawSuspect();
-
-    if (!$weapon || !$room || !$suspect) {
-      return "An error has occurred, could not create game";
-    }
-
 
     //Create required number of witnesses:
 
@@ -50,8 +38,19 @@ class GameManager
     $witnessAmount = $this->returnValidWitnessAmount($witnessAmount);
     $witnessProfiles = $deck->getAllSuspects();
 
-    foreach (range(1, $witnessAmount) as $index => $witness) {
-      $witnesses[] = new Witness(0, $witnessProfiles[$index]->getName(), []);
+    /** @var Drupal\cluedo\Models\Clues\Suspect $witness */
+    for ($i = 0; $i < $witnessAmount; $i++) {
+      $witnesses[] = new Witness(0, $witnessProfiles[$i]->getName(), []);
+    }
+
+//Draw one of each type of card from deck for solution and distribute remaining cards among witnesses.
+
+    $room = $deck->drawRoom();
+    $weapon = $deck->drawWeapon();
+    $suspect = $deck->drawSuspect();
+
+    if (!$weapon || !$room || !$suspect) {
+      return "An error has occurred, could not create game";
     }
 
     //Distribute remaining cards in deck among witnesses:

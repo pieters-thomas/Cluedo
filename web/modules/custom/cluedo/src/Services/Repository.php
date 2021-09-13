@@ -123,8 +123,8 @@ class Repository
     $murderer = reset($game->get('field_murderer')->referencedEntities());
 
     return new Solution(
-      new Weapon($room->id(), $room->label()),
-      new Room($weapon->id(), $weapon->label()),
+      new Room($room->id(), $room->label()),
+      new Weapon($weapon->id(), $weapon->label()),
       new Suspect($murderer->id(), $murderer->label(), $murderer->get('field_color')->getValue()[0]["value"]),
     );
   }

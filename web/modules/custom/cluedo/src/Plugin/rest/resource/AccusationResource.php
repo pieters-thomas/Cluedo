@@ -82,7 +82,7 @@ class AccusationResource extends ResourceBase
     $this->gameManager->endGame($game);
 
     //check if accusation matches solution
-    $isCorrect = $game->getSolution()->verifyAccusation($data['wapen'], $data['kamer'], $data['karakter']);
+    $isCorrect = $game->getSolution()->verifyAccusation( $data['kamer'], $data['wapen'], $data['karakter']);
 
 
     $solutionArray = [
