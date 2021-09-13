@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "a2ee3ac8-7232-4637-9c09-abec55a9bc4d",
+		"name": "Cluedo",
+		"description": "An overview of the different API calls you can make in the cluedo game.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Start New Game",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "cluedo.local/api/cluedo/new-game?aantal=5",
+					"host": [
+						"cluedo",
+						"local"
+					],
+					"path": [
+						"api",
+						"cluedo",
+						"new-game"
+					],
+					"query": [
+						{
+							"key": "aantal",
+							"value": "5"
+						}
+					]
+				},
+				"description": "Generates a new Cluedo game in the backend and returns it's unique key."
+			},
+			"response": []
+		},
+		{
+			"name": "cluedo.local/api/cluedo/clues",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "cluedo.local/api/cluedo/clues",
+					"host": [
+						"cluedo",
+						"local"
+					],
+					"path": [
+						"api",
+						"cluedo",
+						"clues"
+					]
+				},
+				"description": "Retrieve all clues."
+			},
+			"response": []
+		},
+		{
+			"name": "cluedo.local/api/cluedo/guess?key=Lk0bX1",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Mr. Boddy",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"kamer\":\"Lode pijp\",\n    \"wapen\":\"Balzaal\",\n    \"karakter\":\"Dokter Li-La\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "cluedo.local/api/cluedo/guess?key=Lk0bX1",
+					"host": [
+						"cluedo",
+						"local"
+					],
+					"path": [
+						"api",
+						"cluedo",
+						"guess"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "Lk0bX1"
+						}
+					]
+				},
+				"description": "Make a suggestion about the murder.\nReturns the name of the witness and the element of your guess that they refute."
+			},
+			"response": []
+		},
+		{
+			"name": "cluedo.local/api/cluedo/accuse?key=Gk97Nt",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"kamer\":\"Hall\",\n    \"wapen\":\"Dolk\",\n    \"karakter\":\"Kolonel van Geelen\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "cluedo.local/api/cluedo/accuse?key=Gk97Nt",
+					"host": [
+						"cluedo",
+						"local"
+					],
+					"path": [
+						"api",
+						"cluedo",
+						"accuse"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "Gk97Nt"
+						}
+					]
+				},
+				"description": "Make your final accusation."
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "admin",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	}
+}
