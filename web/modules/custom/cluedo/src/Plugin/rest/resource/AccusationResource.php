@@ -26,9 +26,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AccusationResource extends ResourceBase
 {
-  private const SUCCESS_MESSAGE = 'Correct, goed gedaan super speurneus!';
+  private const SUCCESS_MESSAGE = "Proficiat, je hebt de game opgelost! Wij met Calibrate leren iemand met zoveel kwaliteiten als jij beter kennen. Laat hier je e-mail adres achter en we contacteren je voor je volgende quest!";
   private const FAILURE_MESSAGE = 'Helaas, dit was niet het juiste antwoord.';
   private const ON_GAME_OVER_MESSAGE = 'Deze zaak is reeds afgesloten.';
+  private const QR_CODE_PATH = 'modules/custom/cluedo/assets/frame.png';
 
   private Repository $repo;
   private GameManager $gameManager;
@@ -93,10 +94,16 @@ class AccusationResource extends ResourceBase
 
 
     if ($isCorrect) {
+
+      $type = pathinfo(self::QR_CODE_PATH, PATHINFO_EXTENSION);
+      $data = file_get_contents(self::QR_CODE_PATH);
+      $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
       return new ResourceResponse([
         'message' => self::SUCCESS_MESSAGE,
         'correct' => true,
         'oplossing' => $solutionArray,
+        'qr' => $base64
       ]);
     }
 
