@@ -126,6 +126,10 @@ function cluedo_install()
     $newClue->save();
 
   }
+
+  $view = \Drupal\views\Entity\View::create([
+
+  ]);
 }
 
 
