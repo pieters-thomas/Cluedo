@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.witness
-  module:
-    - cluedo
+_core:
+  default_config_hash: Ayn3iM-V5NAJrChmremGnC0pL5inEVYD1Wc-SXKSAiI
 id: node.witness.promote
 field_name: promote
 entity_type: node

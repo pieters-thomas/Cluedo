@@ -5,7 +5,8 @@ dependencies:
   module:
     - node
     - text
-    - cluedo
+_core:
+  default_config_hash: CKvWTcHr5Ysjh4M4qdedfPBN3stNKB7245beeTxjlnc
 id: node.field_game_key
 field_name: field_game_key
 entity_type: node

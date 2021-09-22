@@ -4,11 +4,12 @@ status: true
 dependencies:
   module:
     - menu_ui
-    - cluedo
 third_party_settings:
   menu_ui:
     available_menus: {  }
     parent: ''
+_core:
+  default_config_hash: nWuYXm6asRsD5B5OyEtacClOyQ6tbIiM2NOjIBGZsCQ
 name: Getuige
 type: witness
 description: 'Een getuige met aanwijzingen.'

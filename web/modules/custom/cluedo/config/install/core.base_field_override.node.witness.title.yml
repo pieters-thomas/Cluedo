@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.witness
-  module:
-    - cluedo
+_core:
+  default_config_hash: B7Kqe7b4Hctv729TR3dWWz_sQaaSDagxnMTsO_LPPiA
 id: node.witness.title
 field_name: title
 entity_type: node

@@ -4,7 +4,8 @@ status: true
 dependencies:
   module:
     - node
-    - cluedo
+_core:
+  default_config_hash: 3ox8QOOZM5CVKcQHPKbPoYS7H5-wUBDRchMc6ASf7Aw
 id: node.field_murder_weapon
 field_name: field_murder_weapon
 entity_type: node

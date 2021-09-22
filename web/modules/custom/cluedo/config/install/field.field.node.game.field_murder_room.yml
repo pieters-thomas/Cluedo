@@ -6,8 +6,8 @@ dependencies:
     - field.storage.node.field_murder_room
     - node.type.game
     - node.type.room
-  module:
-    - cluedo
+_core:
+  default_config_hash: _i12htXXSrWA8liVgFLOSOsUK3fwfrnsp1PhNICYrI8
 id: node.game.field_murder_room
 field_name: field_murder_room
 entity_type: node

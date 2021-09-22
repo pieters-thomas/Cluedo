@@ -7,7 +7,8 @@ dependencies:
     - node.type.suspect
   module:
     - text
-    - cluedo
+_core:
+  default_config_hash: qMlVmyaLLSr1UW8OhLodkjj7czjoW1Oe-zwhFDU-IIg
 id: node.suspect.field_description
 field_name: field_description
 entity_type: node

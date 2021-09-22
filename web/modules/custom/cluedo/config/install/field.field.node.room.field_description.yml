@@ -7,7 +7,8 @@ dependencies:
     - node.type.room
   module:
     - text
-    - cluedo
+_core:
+  default_config_hash: DHBEo_jNxY5U34KXPTUcaicQOwMVgY979yV7h2fNXRI
 id: node.room.field_description
 field_name: field_description
 entity_type: node

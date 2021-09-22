@@ -3,13 +3,18 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.suspect.field_clue_image
     - field.field.node.suspect.field_color
     - field.field.node.suspect.field_description
+    - field.field.node.suspect.field_tags
+    - image.style.thumbnail
     - node.type.suspect
   module:
+    - image
     - path
     - text
-    - cluedo
+_core:
+  default_config_hash: ySmn7btlA9dzU1NMWO3lt-1qlBxFBsOD9ifma01dQkY
 id: node.suspect.default
 targetEntityType: node
 bundle: suspect
@@ -21,6 +26,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_clue_image:
+    weight: 124
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
   field_color:
     weight: 122
     settings: {  }
@@ -34,6 +47,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textfield
+    region: content
+  field_tags:
+    weight: 123
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   path:
     type: path

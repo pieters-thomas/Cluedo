@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.room
-  module:
-    - cluedo
+_core:
+  default_config_hash: W58ZSmSDEvuGVs_BPXpUTA0Yf42yPPydLFQ4tsOqTMc
 id: node.room.promote
 field_name: promote
 entity_type: node

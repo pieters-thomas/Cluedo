@@ -3,12 +3,17 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.room.field_clue_image
     - field.field.node.room.field_description
+    - field.field.node.room.field_tags
+    - image.style.thumbnail
     - node.type.room
   module:
+    - image
     - path
     - text
-    - cluedo
+_core:
+  default_config_hash: 1MY-7TJEHyDBlVs4sF0LOfIEAU8XZoyvwXVEwuROD6c
 id: node.room.default
 targetEntityType: node
 bundle: room
@@ -20,6 +25,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_clue_image:
+    weight: 123
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
   field_description:
     weight: 121
     settings:
@@ -27,6 +40,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textfield
+    region: content
+  field_tags:
+    weight: 122
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   path:
     type: path

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.game.field_game_key
+    - field.field.node.game.field_game_over
     - field.field.node.game.field_murder_room
     - field.field.node.game.field_murder_weapon
     - field.field.node.game.field_murderer
@@ -12,7 +13,8 @@ dependencies:
   module:
     - path
     - text
-    - cluedo
+_core:
+  default_config_hash: nQymDFVihS5FUIFrE0HNb3vzkamFWn8iB0YVg6bNPg0
 id: node.game.default
 targetEntityType: node
 bundle: game
@@ -31,6 +33,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textfield
+    region: content
+  field_game_over:
+    weight: 126
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
     region: content
   field_murder_room:
     weight: 122

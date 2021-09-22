@@ -1,19 +1,18 @@
-uuid: 9b3acaea-ef16-4ce1-9be2-2324fe028c2d
+uuid: e51985c7-4b51-4926-9a90-283dedc4744f
 langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_game_over
     - node.type.game
-_core:
-  default_config_hash: 5_0sizh9_ZauizgZ__8bndtTPrOLqzX6ljC3vtHE9Vk
-id: node.game.promote
-field_name: promote
+id: node.game.field_game_over
+field_name: field_game_over
 entity_type: node
 bundle: game
-label: 'Promoted to front page'
+label: 'Game Over'
 description: ''
-required: false
-translatable: true
+required: true
+translatable: false
 default_value:
   -
     value: 0

@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.game.field_game_key
+    - field.field.node.game.field_game_over
     - field.field.node.game.field_murder_room
     - field.field.node.game.field_murder_weapon
     - field.field.node.game.field_murderer
@@ -12,7 +13,8 @@ dependencies:
     - node.type.game
   module:
     - user
-    - cluedo
+_core:
+  default_config_hash: 6OkS04VazQLokdaFLWLSmpM7n66QmRQ8gR88WygN6Xo
 id: node.game.teaser
 targetEntityType: node
 bundle: game
@@ -25,6 +27,7 @@ content:
     region: content
 hidden:
   field_game_key: true
+  field_game_over: true
   field_murder_room: true
   field_murder_weapon: true
   field_murderer: true

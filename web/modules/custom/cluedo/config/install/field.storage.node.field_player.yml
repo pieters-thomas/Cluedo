@@ -1,17 +1,16 @@
-uuid: 3265190a-af85-45ac-aeb4-7c3b3989c910
+uuid: af41d05f-d98f-4269-9925-3c98a1e1e582
 langcode: en
 status: true
 dependencies:
   module:
     - node
-_core:
-  default_config_hash: bvvat-8JOEIAQ--Gja-jmdGpfnlUZSm9uGhjiQyoayA
-id: node.field_murderer
-field_name: field_murderer
+    - user
+id: node.field_player
+field_name: field_player
 entity_type: node
 type: entity_reference
 settings:
-  target_type: node
+  target_type: user
 module: core
 locked: false
 cardinality: 1

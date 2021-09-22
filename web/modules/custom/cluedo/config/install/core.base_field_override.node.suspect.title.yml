@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.suspect
-  module:
-    - cluedo
+_core:
+  default_config_hash: nRI7-7vf_3fJ00KjO9stZRCcBj_86NJX5TWh2yBEdIs
 id: node.suspect.title
 field_name: title
 entity_type: node

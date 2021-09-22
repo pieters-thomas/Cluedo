@@ -4,11 +4,14 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.room.field_clue_image
     - field.field.node.room.field_description
+    - field.field.node.room.field_tags
     - node.type.room
   module:
     - user
-    - cluedo
+_core:
+  default_config_hash: d6QXyUSJUtZDNhO_2vBOVt1ZvLtRZg43UW6hhI6gIjw
 id: node.room.teaser
 targetEntityType: node
 bundle: room
@@ -20,4 +23,6 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_clue_image: true
   field_description: true
+  field_tags: true

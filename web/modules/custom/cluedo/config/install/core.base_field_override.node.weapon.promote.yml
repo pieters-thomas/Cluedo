@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.weapon
-  module:
-    - cluedo
+_core:
+  default_config_hash: j4iqsOkjlVgbHG-DOMgFeU9NZNoK64WLMjl6xZUPRnU
 id: node.weapon.promote
 field_name: promote
 entity_type: node

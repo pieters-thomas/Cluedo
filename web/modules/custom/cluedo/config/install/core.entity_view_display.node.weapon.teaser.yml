@@ -4,11 +4,14 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.weapon.field_clue_image
     - field.field.node.weapon.field_description
+    - field.field.node.weapon.field_tags
     - node.type.weapon
   module:
     - user
-    - cluedo
+_core:
+  default_config_hash: gEdvr2LkIqLJSwqorpA5ASriyht9ypsAQs20L__UhBU
 id: node.weapon.teaser
 targetEntityType: node
 bundle: weapon
@@ -20,4 +23,6 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_clue_image: true
   field_description: true
+  field_tags: true

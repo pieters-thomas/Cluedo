@@ -6,8 +6,8 @@ dependencies:
     - field.storage.node.field_murderer
     - node.type.game
     - node.type.suspect
-  module:
-    - cluedo
+_core:
+  default_config_hash: YkiAqJHe4D0MjBUMBfh4ibw2zdQYe62xafrL7OKTt0M
 id: node.game.field_murderer
 field_name: field_murderer
 entity_type: node

@@ -5,12 +5,9 @@ namespace Drupal\cluedo\Services;
 use Drupal;
 use Drupal\cluedo\Models\Cluedo;
 use Drupal\cluedo\Models\Witness;
-use Drupal\cluedo\Models\Solution;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\node\Entity\Node;
 use Exception;
-use JetBrains\PhpStorm\Pure;
 
 class GameManager
 {
@@ -25,10 +22,11 @@ class GameManager
    * Creates and stores a new game in database while returning the game's key.
    * @throws Exception
    */
-  public function createNewGame(int $witnessAmount, Drupal\cluedo\Models\Deck $deck, Repository $repository): string
+  public function createNewGame( Repository $repository, int $witnessAmount,string $player = '', ): string
   {
 
     $gameKey = $this->generateUniqueKey($repository);
+    $deck = $repository->fetchAllClues();
     $deck->shuffleDeck();
 
     //Create required number of witnesses:
@@ -38,7 +36,7 @@ class GameManager
     $witnessAmount = $this->returnValidWitnessAmount($witnessAmount);
     $witnessProfiles = $deck->getAllSuspects();
 
-    /** @var Drupal\cluedo\Models\Clues\Suspect $witness */
+
     for ($i = 0; $i < $witnessAmount; $i++) {
       $witnesses[] = new Witness(0, $witnessProfiles[$i]->getName(), []);
     }
@@ -76,6 +74,12 @@ class GameManager
         'field_profile' => $witnessProfiles[$index]->getNodeId(),
         'field_clues' => $witness->getClueIds(),
       ]);
+
+//     for multiplayer
+//      if ($witness->getName() === $player)
+//      {
+//       $node->set('field_player', Drupal::currentUser()->id());
+//      }
 
       $node->enforceIsNew();
       $node->save();

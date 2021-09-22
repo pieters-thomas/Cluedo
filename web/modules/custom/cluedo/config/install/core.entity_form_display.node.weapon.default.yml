@@ -3,12 +3,17 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.weapon.field_clue_image
     - field.field.node.weapon.field_description
+    - field.field.node.weapon.field_tags
+    - image.style.thumbnail
     - node.type.weapon
   module:
+    - image
     - path
     - text
-    - cluedo
+_core:
+  default_config_hash: t3_h7KhVXigq2r0u_S6xjdBZQ9lg_eD8telixBKcWM0
 id: node.weapon.default
 targetEntityType: node
 bundle: weapon
@@ -20,6 +25,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_clue_image:
+    weight: 123
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
   field_description:
     weight: 121
     settings:
@@ -27,6 +40,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textfield
+    region: content
+  field_tags:
+    weight: 122
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   path:
     type: path

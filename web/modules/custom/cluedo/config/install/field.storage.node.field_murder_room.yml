@@ -4,7 +4,8 @@ status: true
 dependencies:
   module:
     - node
-    - cluedo
+_core:
+  default_config_hash: OuDmRSNzED31fketEDHF60lnsWD9tje7iFdMVPZRmJE
 id: node.field_murder_room
 field_name: field_murder_room
 entity_type: node

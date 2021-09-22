@@ -5,11 +5,13 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.witness.field_clues
+    - field.field.node.witness.field_player
     - field.field.node.witness.field_profile
     - node.type.witness
   module:
     - user
-    - cluedo
+_core:
+  default_config_hash: K-bt5bHmgrrM6Y7_4nuWVfr6DrkAQaIF8hfzcPTAsjU
 id: node.witness.teaser
 targetEntityType: node
 bundle: witness
@@ -22,4 +24,5 @@ content:
     region: content
 hidden:
   field_clues: true
+  field_player: true
   field_profile: true

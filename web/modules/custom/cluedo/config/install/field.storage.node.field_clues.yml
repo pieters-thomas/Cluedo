@@ -4,7 +4,8 @@ status: true
 dependencies:
   module:
     - node
-    - cluedo
+_core:
+  default_config_hash: hKFYvi51XaEccJ7LPUQOv_7i3z8DWDRCI4zDgA7HNyA
 id: node.field_clues
 field_name: field_clues
 entity_type: node

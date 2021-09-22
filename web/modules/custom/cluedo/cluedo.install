@@ -102,17 +102,26 @@ const CLUES = [
  */
 function cluedo_install()
 {
+  $term = \Drupal\taxonomy\Entity\Term::create([
+    'vid'=>'tags',
+    'name'=>'Clue',
+  ]);
+
+  $term->enforceIsNew();
+  $term->save();
+
+  $tid = $term->id();
 
   foreach (CLUES as $clue) {
     $newClue = Node::create([
       'type' => $clue['type'],
       'title' => $clue['title'],
+      'field_tags' =>[['target_id'=>$tid]]
     ]);
 
     if ($clue['color']) {
       $newClue->set('field_color', $clue['color']);
     }
-
     $newClue->enforceIsNew();
     $newClue->save();
 

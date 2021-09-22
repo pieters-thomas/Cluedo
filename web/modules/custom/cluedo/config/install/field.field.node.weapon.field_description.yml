@@ -7,7 +7,8 @@ dependencies:
     - node.type.weapon
   module:
     - text
-    - cluedo
+_core:
+  default_config_hash: bUQ37iUl2nRoj0F4bHIBDCDgBwEYunhSFBpPGkwq7HQ
 id: node.weapon.field_description
 field_name: field_description
 entity_type: node

@@ -8,8 +8,8 @@ dependencies:
     - node.type.suspect
     - node.type.weapon
     - node.type.witness
-  module:
-    - cluedo
+_core:
+  default_config_hash: tqPVIoEfyv7vfE0HFfAlEDCp6Fx05INmQaBT_NTU-dE
 id: node.witness.field_clues
 field_name: field_clues
 entity_type: node

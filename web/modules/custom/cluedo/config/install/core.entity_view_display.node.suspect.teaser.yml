@@ -4,12 +4,15 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.suspect.field_clue_image
     - field.field.node.suspect.field_color
     - field.field.node.suspect.field_description
+    - field.field.node.suspect.field_tags
     - node.type.suspect
   module:
     - user
-    - cluedo
+_core:
+  default_config_hash: nf1Bv79Q1STYa5L2AE1oikiO3jGESl1wXtd-ShcHvWI
 id: node.suspect.teaser
 targetEntityType: node
 bundle: suspect
@@ -21,5 +24,7 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_clue_image: true
   field_color: true
   field_description: true
+  field_tags: true

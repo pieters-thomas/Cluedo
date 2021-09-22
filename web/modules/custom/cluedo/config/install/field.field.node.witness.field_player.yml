@@ -1,0 +1,29 @@
+uuid: e8ec2cda-415c-4965-ac3f-b5f36a660ad2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_player
+    - node.type.witness
+id: node.witness.field_player
+field_name: field_player
+entity_type: node
+bundle: witness
+label: Speler
+description: 'User die gelinkt is aan het spel.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:user'
+  handler_settings:
+    include_anonymous: true
+    filter:
+      type: _none
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+field_type: entity_reference

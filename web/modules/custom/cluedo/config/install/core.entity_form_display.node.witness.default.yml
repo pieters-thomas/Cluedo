@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.witness.field_clues
+    - field.field.node.witness.field_player
     - field.field.node.witness.field_profile
     - node.type.witness
   module:
     - path
-    - cluedo
+_core:
+  default_config_hash: CtWj8MtCopcJhDrcTAcc-purHsBD_-3khThwKWTpEc4
 id: node.witness.default
 targetEntityType: node
 bundle: witness
@@ -22,6 +24,16 @@ content:
     third_party_settings: {  }
   field_clues:
     weight: 122
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_player:
+    weight: 123
     settings:
       match_operator: CONTAINS
       match_limit: 10

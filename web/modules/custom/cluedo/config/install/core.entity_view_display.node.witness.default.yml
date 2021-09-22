@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.witness.field_clues
+    - field.field.node.witness.field_player
     - field.field.node.witness.field_profile
     - node.type.witness
   module:
     - user
-    - cluedo
+_core:
+  default_config_hash: NhULo6oYXSjzvjU9DLHW2fVVXpO99tNZYn4-G6aAhJM
 id: node.witness.default
 targetEntityType: node
 bundle: witness
@@ -16,6 +18,14 @@ mode: default
 content:
   field_clues:
     weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_player:
+    weight: 103
     label: above
     settings:
       link: true

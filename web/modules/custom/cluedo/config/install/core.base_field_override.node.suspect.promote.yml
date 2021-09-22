@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.suspect
-  module:
-    - cluedo
+_core:
+  default_config_hash: LEO_pWF26hhYQx8elMcJ4faHPK4yOUk46hd2-RwtGJs
 id: node.suspect.promote
 field_name: promote
 entity_type: node
