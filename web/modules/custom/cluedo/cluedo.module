@@ -1,0 +1,43 @@
+<?php
+
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
+
+
+function cluedo_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+
+  function getTermId(string $search): int
+  {
+
+    $terms = Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple();
+
+    foreach ($terms as $value)
+    {
+      if ($value->label() === $search) {
+        return (int) $value->id();
+      }
+    }
+    throw new Exception('term not found');
+  }
+
+  if ($view->id() === 'clues') {
+    $term_id = getTermId("Clue");
+
+    foreach ($query->where as &$condition_group) {
+      foreach ($condition_group['conditions'] as &$condition) {
+
+        if ($condition['field'] === "taxonomy_index.tid = :taxonomy_index_tid") {
+          $condition = [
+            'field' => "taxonomy_index.tid = :taxonomy_index_tid",
+            'value' => [':taxonomy_index_tid' => $term_id],
+            'operator' => 'formula',
+          ];
+        }
+      }
+    }
+  }
+}
+
+
+
+

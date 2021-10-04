@@ -73,16 +73,12 @@ class StartResource extends ResourceBase
   public function get(): ResourceResponse
   {
       $playerAmount = (int)htmlspecialchars(Drupal::request()->get('aantal'), ENT_QUOTES);
-      /*$characterName = htmlspecialchars(Drupal::request()->get('karakter'), ENT_QUOTES);*/
 
       $gameKey = $this->gameManager->createNewGame(
         $this->repository,
         htmlspecialchars($playerAmount, ENT_QUOTES),
-      /*htmlspecialchars($characterName, ENT_QUOTES),*/
       );
 
       return new ResourceResponse(['key' => $gameKey]);
-
-
   }
 }

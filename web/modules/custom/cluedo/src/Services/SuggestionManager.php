@@ -16,7 +16,6 @@ class SuggestionManager
    * @return array
    */
   #[Pure]
-  #[ArrayShape(['player' => "string", 'disproves' => "string", 'type' => "string"])]
   public function disproveSuggestion(array $witnesses, string $roomName, string $weaponName, string $murdererName): array
   {
     foreach ($witnesses as $witness) {
@@ -24,10 +23,13 @@ class SuggestionManager
       {
         if (in_array(strtolower($clue->getName()), [strtolower($roomName), strtolower($weaponName), strtolower($murdererName)], true)) {
 
+
           return [
             'getuige' => $witness->getName(),
             'weerlegging' => $clue->getName(),
           ];
+//            return ['is_correct'=>false];
+
         }
       }
     }
@@ -35,5 +37,6 @@ class SuggestionManager
       'getuige' => '',
       'weerlegging' => '',
       ];
+//    return ['is_correct'=>true];
   }
 }
