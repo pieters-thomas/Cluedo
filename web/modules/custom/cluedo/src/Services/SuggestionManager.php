@@ -10,23 +10,23 @@ class SuggestionManager
 {
   /**
    * @param Witness[] $witnesses
-   * @param string $roomName
-   * @param string $weaponName
-   * @param string $murdererName
+   * @param int $suspectId
+   * @param int $weaponId
+   * @param int $roomId
    * @return array
    */
   #[Pure]
-  public function disproveSuggestion(array $witnesses, string $roomName, string $weaponName, string $murdererName): array
+  public function disproveSuggestion(array $witnesses, int $suspectId, int $weaponId , int $roomId): array
   {
+
     foreach ($witnesses as $witness) {
       foreach ($witness->getClues() as $clue)
       {
-        if (in_array(strtolower($clue->getName()), [strtolower($roomName), strtolower($weaponName), strtolower($murdererName)], true)) {
-
-
+        if (in_array($clue->getNodeId(), [$suspectId,$weaponId, $roomId], true))
+        {
           return [
-            'getuige' => $witness->getName(),
-            'weerlegging' => $clue->getName(),
+            'getuige' => (string) $witness->getProfile()->getNodeId(),
+            'weerlegging' => (string) $clue->getNodeId(),
           ];
 //            return ['is_correct'=>false];
 

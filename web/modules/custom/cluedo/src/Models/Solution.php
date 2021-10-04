@@ -39,12 +39,12 @@ class Solution
   }
 
 
-  #[Pure] public function verifyAccusation( $roomName, $weaponName, $suspectName): bool
+  #[Pure] public function verifyAccusation($suspectId, $weaponId, $roomId): bool
   {
     return (
-      $roomName === $this->room->getName()
-      && $weaponName === $this->weapon->getName()
-      && $suspectName === $this->suspect->getName()
+      $roomId === $this->room->getNodeId()
+      && $weaponId === $this->weapon->getNodeId()
+      && $suspectId === $this->suspect->getNodeId()
     );
   }
 }

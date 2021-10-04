@@ -73,9 +73,9 @@ class SuggestResource extends ResourceBase
 
       $response = $this->suggestionManager->disproveSuggestion(
         $game->getWitnesses(),
-        $data['kamer'],
+        $data['karakter'],
         $data['wapen'],
-        $data['karakter']
+        $data['kamer'],
       );
 
       return new ResourceResponse($response);

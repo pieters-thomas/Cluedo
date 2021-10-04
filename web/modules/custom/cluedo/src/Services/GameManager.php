@@ -38,7 +38,7 @@ class GameManager
 
 
     for ($i = 0; $i < $witnessAmount; $i++) {
-      $witnesses[] = new Witness(0, $witnessProfiles[$i]->getName(), []);
+      $witnesses[] = new Witness(0, $witnessProfiles[$i], []);
     }
 
 //Draw one of each type of card from deck for solution and distribute remaining cards among witnesses.
@@ -66,12 +66,15 @@ class GameManager
 
     //Create the witness and game nodes:
 
+    /**
+     * @var Witness $witness
+     */
     foreach ($witnesses as $index => $witness) {
 
       $node = Node::create([
         'type' => 'witness',
-        'title' => $witness->getName(),
-        'field_profile' => $witnessProfiles[$index]->getNodeId(),
+        'title' => $witness->getProfile()->getName(),
+        'field_profile' => $witness->getProfile()->getNodeId(),
         'field_clues' => $witness->getClueIds(),
       ]);
 

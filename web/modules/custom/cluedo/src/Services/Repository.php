@@ -103,6 +103,7 @@ class Repository
 
     foreach ($witnessEntities as $entity) {
 
+      $profile = $this->entityToClue($entity->get('field_profile')->referencedEntities()[0]);
       $clueEntities = $entity->get('field_clues')->referencedEntities();
       $cluesArray = [];
 
@@ -110,7 +111,7 @@ class Repository
         $cluesArray[] = $this->entityToClue($clueEntity);
       }
 
-      $witnesses[] = new Witness($entity->id(), $entity->label(), $cluesArray);
+      $witnesses[] = new Witness($entity->id(), $profile, $cluesArray);
     }
 
     return $witnesses;

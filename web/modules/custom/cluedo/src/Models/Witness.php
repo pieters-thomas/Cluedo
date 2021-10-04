@@ -8,7 +8,7 @@ use JetBrains\PhpStorm\Pure;
 class Witness
 {
   private int $nodeId;
-  private string $name;
+  private CluedoClue $profile;
   /**
    * @var CluedoClue[]
    */
@@ -20,10 +20,10 @@ class Witness
    * @param int $nodeId
    * @param CluedoClue[] $clues
    */
-  public function __construct( int $nodeId, string $name, array $clues = [])
+  public function __construct( int $nodeId, CluedoClue $profile, array $clues = [])
   {
     $this->nodeId = $nodeId;
-    $this->name = $name;
+    $this->profile = $profile;
     $this->clues = $clues;
   }
 
@@ -32,9 +32,9 @@ class Witness
     return $this->nodeId;
   }
 
-  public function getName(): string
+  public function getProfile(): CluedoClue
   {
-    return $this->name;
+    return $this->profile;
   }
 
   /**
