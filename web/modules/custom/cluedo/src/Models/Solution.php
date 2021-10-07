@@ -42,9 +42,9 @@ class Solution
   #[Pure] public function verifyAccusation($suspectId, $weaponId, $roomId): bool
   {
     return (
-      $roomId === $this->room->getNodeId()
-      && $weaponId === $this->weapon->getNodeId()
-      && $suspectId === $this->suspect->getNodeId()
+      $roomId === (string) $this->room->getNodeId()
+      && $weaponId === (string) $this->weapon->getNodeId()
+      && $suspectId === (string) $this->suspect->getNodeId()
     );
   }
 }
