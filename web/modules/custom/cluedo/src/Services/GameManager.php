@@ -2,9 +2,7 @@
 
 namespace Drupal\cluedo\Services;
 
-use Drupal;
 use Drupal\cluedo\Models\Cluedo;
-use Drupal\cluedo\Models\Witness;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\node\Entity\Node;
 use Exception;
@@ -14,80 +12,25 @@ class GameManager
   private const KEY_VALID_CHAR = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   private const KEY_LENGTH = 6;
 
-  private const WITNESS_MAX = 6;
-  private const WITNESS_MIN = 2;
-
-
   /**
    * Creates and stores a new game in database while returning the game's key.
    * @throws Exception
    */
-  public function createNewGame( Repository $repository, int $witnessAmount,string $player = '', ): string
+  public function createNewGame( Repository $repository): string
   {
 
     $gameKey = $this->generateUniqueKey($repository);
     $deck = $repository->fetchAllClues();
     $deck->shuffleDeck();
 
-    //Create required number of witnesses:
-
-    $witnesses = [];
-    $witnessNodeIds = [];
-    $witnessAmount = $this->returnValidWitnessAmount($witnessAmount);
-    $witnessProfiles = $deck->getAllSuspects();
-
-
-    for ($i = 0; $i < $witnessAmount; $i++) {
-      $witnesses[] = new Witness(0, $witnessProfiles[$i], []);
-    }
-
-//Draw one of each type of card from deck for solution and distribute remaining cards among witnesses.
+    //Draw one of each type of card from deck for solution and distribute remaining cards among witnesses.
 
     $room = $deck->drawRoom();
     $weapon = $deck->drawWeapon();
     $suspect = $deck->drawSuspect();
 
     if (!$weapon || !$room || !$suspect) {
-      return "An error has occurred, could not create game";
-    }
-
-    //Distribute remaining cards in deck among witnesses:
-
-    $count = 0;
-    $countMax = $witnessAmount;
-
-    foreach ($deck->getCards() as $card) {
-      $witnesses[$count]->addClue($card);
-
-      if (++$count === $countMax) {
-        $count = 0;
-      }
-    }
-
-    //Create the witness and game nodes:
-
-    /**
-     * @var Witness $witness
-     */
-    foreach ($witnesses as $index => $witness) {
-
-      $node = Node::create([
-        'type' => 'witness',
-        'title' => $witness->getProfile()->getName(),
-        'field_profile' => $witness->getProfile()->getNodeId(),
-        'field_clues' => $witness->getClueIds(),
-      ]);
-
-//     for multiplayer
-//      if ($witness->getName() === $player)
-//      {
-//       $node->set('field_player', Drupal::currentUser()->id());
-//      }
-
-      $node->enforceIsNew();
-      $node->save();
-
-      $witnessNodeIds[] = $node->id();
+      throw new Exception("Could not create valid game");
     }
 
     //Create game node
@@ -97,11 +40,9 @@ class GameManager
       'title' => 'Cluedo-spel',
       'field_game_over' => false,
       'field_game_key' => $gameKey,
-      'field_witnesses' => $witnessNodeIds,
       'field_murderer' => $suspect->getNodeId(),
       'field_murder_room' => $room->getNodeId(),
       'field_murder_weapon' => $weapon->getNodeId(),
-
     ]);
 
     $gameNode->enforceIsNew();
@@ -121,19 +62,6 @@ class GameManager
 
     return $this->generateUniqueKey($repository);
   }
-
-
-  private function returnValidWitnessAmount(int $witnessAmount): int
-  {
-    if ($witnessAmount < self::WITNESS_MIN) {
-      $witnessAmount = self::WITNESS_MIN;
-    }
-    if ($witnessAmount > self::WITNESS_MAX) {
-      $witnessAmount = self::WITNESS_MAX;
-    }
-    return $witnessAmount;
-  }
-
 
   /**
    * @throws EntityStorageException

@@ -64,19 +64,26 @@ class SuggestResource extends ResourceBase
       $game = $this->repo->fetchGame(Drupal::request()->get('key'));
 
       if (!$game) {
-        return new ResourceResponse("Spel niet gevonden");
+        return new ResourceResponse(['message'=>"Spel niet gevonden"]);
       }
 
       if ($game->isGameOver()) {
-        return new ResourceResponse("Deze zaak is reeds afgesloten");
+        return new ResourceResponse(['message'=>"Dit spel is reeds afgelopen"]);
       }
 
-      $response = $this->suggestionManager->disproveSuggestion(
-        $game->getWitnesses(),
-        $data['karakter'],
-        $data['wapen'],
-        $data['kamer'],
+        $response = $this->suggestionManager->disproveSuggestion(
+          $game->getSolution(),
+        (int) $data['karakter'],
+        (int) $data['wapen'],
+        (int) $data['kamer'],
       );
+
+//      $response = $this->suggestionManager->masterMindResponse(
+//        $game->getSolution(),
+//        (int) $data['karakter'],
+//        (int) $data['wapen'],
+//        (int) $data['kamer'],
+//      );
 
       return new ResourceResponse($response);
   }

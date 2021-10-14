@@ -72,7 +72,6 @@ class Repository
       $game->id(),
       $game->get('field_game_over')->getValue()[0]["value"],
       $this->extractSolution($game),
-      $this->extractWitnesses($game),
     );
   }
 

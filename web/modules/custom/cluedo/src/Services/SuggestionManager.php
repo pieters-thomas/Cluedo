@@ -2,41 +2,44 @@
 
 namespace Drupal\cluedo\Services;
 
-use Drupal\cluedo\Models\Witness;
-use JetBrains\PhpStorm\ArrayShape;
+use Drupal\cluedo\Models\Solution;
 use JetBrains\PhpStorm\Pure;
 
 class SuggestionManager
 {
   /**
-   * @param Witness[] $witnesses
+   * @param Solution $solution
    * @param int $suspectId
    * @param int $weaponId
    * @param int $roomId
    * @return array
    */
   #[Pure]
-  public function disproveSuggestion(array $witnesses, int $suspectId, int $weaponId , int $roomId): array
+  public function disproveSuggestion(Solution $solution, int $suspectId, int $weaponId , int $roomId): array
   {
+    $inCorrect = [];
 
-    foreach ($witnesses as $witness) {
-      foreach ($witness->getClues() as $clue)
-      {
-        if (in_array($clue->getNodeId(), [$suspectId,$weaponId, $roomId], true))
-        {
-          return [
-            'getuige' => (string) $witness->getProfile()->getNodeId(),
-            'weerlegging' => (string) $clue->getNodeId(),
-          ];
-//            return ['is_correct'=>false];
+    if ($suspectId !== $solution->getSuspect()->getNodeId()){$inCorrect[] = $suspectId;}
+    if ($weaponId !== $solution->getWeapon()->getNodeId()){$inCorrect[] = $weaponId;}
+    if ($roomId !== $solution->getRoom()->getNodeId()){$inCorrect[] = $roomId;}
 
-        }
-      }
-    }
+    shuffle($inCorrect);
+
     return [
-      'getuige' => '',
-      'weerlegging' => '',
-      ];
-//    return ['is_correct'=>true];
+      'num_correct' => (string) 3 - count($inCorrect),
+      'incorrect' => (string) $inCorrect[0],
+    ];
+
+  }
+
+  public function masterMindResponse(Solution $solution, int $suspectId, int $weaponId , int $roomId)
+  {
+    $correct=0;
+
+    if($solution->getSuspect()->getNodeId() === $suspectId){++$correct;}
+    if($solution->getWeapon()->getNodeId() === $weaponId){++$correct;}
+    if($solution->getRoom()->getNodeId() === $roomId){++$correct;}
+
+    return ['correct' => $correct];
   }
 }

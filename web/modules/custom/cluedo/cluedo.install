@@ -10,7 +10,7 @@ const CLUES = [
   ],
   [
     'type' => 'weapon',
-    'title' => 'Kandelaar',
+    'title' => 'Champagne fles',
   ],
   [
     'type' => 'weapon',
@@ -18,19 +18,31 @@ const CLUES = [
   ],
   [
     'type' => 'weapon',
-    'title' => 'Touw',
+    'title' => 'Sociale media',
   ],
   [
     'type' => 'weapon',
-    'title' => 'Lode pijp',
+    'title' => 'Cheque boek',
   ],
   [
     'type' => 'weapon',
-    'title' => 'Engelse sleutel',
+    'title' => 'USB-stick',
   ],
   [
     'type' => 'room',
-    'title' => 'Keuken',
+    'title' => 'Master Bedroom',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Wijnkelder',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Toiletten',
+  ],
+  [
+    'type' => 'room',
+    'title' => 'Trappenhal',
   ],
   [
     'type' => 'room',
@@ -38,63 +50,77 @@ const CLUES = [
   ],
   [
     'type' => 'room',
-    'title' => 'Serre',
-  ],
-  [
-    'type' => 'room',
-    'title' => 'Eetkamer',
-  ],
-  [
-    'type' => 'room',
-    'title' => 'Biljartkamer',
-  ],
-  [
-    'type' => 'room',
-    'title' => 'Bibliotheek',
-  ],
-  [
-    'type' => 'room',
-    'title' => 'Zitkamer',
-  ],
-  [
-    'type' => 'room',
-    'title' => 'Hal',
-  ],
-  [
-    'type' => 'room',
-    'title' => 'Studeerkamer',
+    'title' => 'Inkomhal',
   ],
   [
     'type' => 'suspect',
-    'title' => 'Rosa Roodhart',
-    'color' => 'red'
+    'title' => 'Bill Bridge',
   ],
   [
     'type' => 'suspect',
-    'title' => 'Kolonel van Geelen',
-    'color' => 'yellow'
+    'title' => 'Lady Blabla',
   ],
   [
     'type' => 'suspect',
-    'title' => 'Dominee Groenewoud',
-    'color' => 'green'
+    'title' => 'Richard Swansong',
   ],
   [
     'type' => 'suspect',
-    'title' => 'Mw. Blauw van Draet',
-    'color' => 'blue'
+    'title' => 'Warren a la Carte',
   ],
   [
     'type' => 'suspect',
-    'title' => 'Professor Pimpel',
-    'color' => 'purple'
+    'title' => 'Mark Zuckervalley',
   ],
   [
     'type' => 'suspect',
-    'title' => 'Dokter Li-La',
-    'color' => 'pink'
+    'title' => 'Donna X',
   ],
-
+  [
+    'type' => 'suspect',
+    'title' => 'Tim Chef',
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Justin Fever',
+  ],[
+    'type' => 'suspect',
+    'title' => 'Donald Trunk',
+  ],[
+    'type' => 'suspect',
+    'title' => 'Larry Cage',
+  ],[
+    'type' => 'suspect',
+    'title' => 'Vladimir Putout',
+  ],[
+    'type' => 'suspect',
+    'title' => 'Jack De',
+  ],[
+    'type' => 'suspect',
+    'title' => 'Kanye East',
+  ],[
+    'type' => 'suspect',
+    'title' => 'Hillary Plankton',
+  ],[
+    'type' => 'suspect',
+    'title' => 'The Queen',
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Jeff Sos',
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Prins Larry',
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Nolan Tusk',
+  ],
+  [
+    'type' => 'suspect',
+    'title' => 'Meghan Sparkel',
+  ],
 ];
 
 /**

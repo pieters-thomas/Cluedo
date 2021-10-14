@@ -83,35 +83,33 @@ class AccusationResource extends ResourceBase
     $this->gameManager->endGame($game);
 
     //check if accusation matches solution
-    $isCorrect = $game->getSolution()->verifyAccusation($data['karakter'] , $data['wapen'],$data['kamer'] );
 
-
-    $solutionArray = [
-      'kamer' => $game->getSolution()->getRoom()->getNodeId(),
-      'wapen' => $game->getSolution()->getWeapon()->getNodeId(),
-      'karakter' => $game->getSolution()->getSuspect()->getNodeId(),
+    $answerArray = [
+      'kamer'=> htmlspecialchars($data['kamer'], ENT_QUOTES),
+      'wapen'=> htmlspecialchars($data['wapen'], ENT_QUOTES),
+      'karakter'=> htmlspecialchars($data['karakter'], ENT_QUOTES),
     ];
 
+    $solutionArray = [
+      'kamer' => (string) $game->getSolution()->getRoom()->getNodeId(),
+      'wapen' => (string)$game->getSolution()->getWeapon()->getNodeId(),
+      'karakter' => (string) $game->getSolution()->getSuspect()->getNodeId(),
+    ];
 
-    if ($isCorrect) {
+    $isCorrect = ($answerArray === $solutionArray);
 
-      $type = pathinfo(self::QR_CODE_PATH, PATHINFO_EXTENSION);
-      $data = file_get_contents(self::QR_CODE_PATH);
-      $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-
-      return new ResourceResponse([
-        'message' => self::SUCCESS_MESSAGE,
-        'correct' => true,
-        'oplossing' => $solutionArray,
-        'qr' => $base64
-      ]);
-    }
+    $type = pathinfo(self::QR_CODE_PATH, PATHINFO_EXTENSION);
+    $data = file_get_contents(self::QR_CODE_PATH);
+    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
     return new ResourceResponse([
-      'message' => self::FAILURE_MESSAGE,
-      'correct' => false,
-      'oplossing' => $solutionArray,
+        'correct' => $isCorrect,
+        'message' => $isCorrect? self::SUCCESS_MESSAGE: self::FAILURE_MESSAGE,
+        'answer' => $answerArray,
+        'solution' => $solutionArray,
+        'easterEgg' => $isCorrect? $base64: null
     ]);
+
   }
 
 }

@@ -9,7 +9,6 @@ dependencies:
     - field.field.node.game.field_murder_room
     - field.field.node.game.field_murder_weapon
     - field.field.node.game.field_murderer
-    - field.field.node.game.field_witnesses
     - node.type.game
   module:
     - user
@@ -31,4 +30,3 @@ hidden:
   field_murder_room: true
   field_murder_weapon: true
   field_murderer: true
-  field_witnesses: true

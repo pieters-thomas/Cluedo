@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.game.field_murder_room
     - field.field.node.game.field_murder_weapon
     - field.field.node.game.field_murderer
-    - field.field.node.game.field_witnesses
     - node.type.game
   module:
     - path
@@ -63,16 +62,6 @@ content:
     region: content
   field_murderer:
     weight: 123
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_witnesses:
-    weight: 125
     settings:
       match_operator: CONTAINS
       match_limit: 10
