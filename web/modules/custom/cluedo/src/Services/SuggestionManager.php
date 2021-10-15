@@ -3,6 +3,7 @@
 namespace Drupal\cluedo\Services;
 
 use Drupal\cluedo\Models\Solution;
+use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
 class SuggestionManager
@@ -14,7 +15,7 @@ class SuggestionManager
    * @param int $roomId
    * @return array
    */
-  #[Pure]
+  #[ArrayShape(['num_correct' => "int|string", 'incorrect' => "string"])]
   public function disproveSuggestion(Solution $solution, int $suspectId, int $weaponId , int $roomId): array
   {
     $inCorrect = [];
@@ -32,7 +33,8 @@ class SuggestionManager
 
   }
 
-  public function masterMindResponse(Solution $solution, int $suspectId, int $weaponId , int $roomId)
+  #[ArrayShape(['num_correct' => "int"])] #[Pure]
+  public function masterMindResponse(Solution $solution, int $suspectId, int $weaponId , int $roomId): array
   {
     $correct=0;
 
@@ -40,6 +42,6 @@ class SuggestionManager
     if($solution->getWeapon()->getNodeId() === $weaponId){++$correct;}
     if($solution->getRoom()->getNodeId() === $roomId){++$correct;}
 
-    return ['correct' => $correct];
+    return ['num_correct' => $correct];
   }
 }
