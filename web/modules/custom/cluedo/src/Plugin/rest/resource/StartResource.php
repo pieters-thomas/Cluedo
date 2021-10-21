@@ -2,7 +2,6 @@
 
 namespace Drupal\cluedo\Plugin\rest\resource;
 
-use Drupal;
 use Drupal\cluedo\Services\GameManager;
 use Drupal\cluedo\Services\Repository;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -72,7 +71,12 @@ class StartResource extends ResourceBase
    */
   public function get(): ResourceResponse
   {
-      $gameKey = $this->gameManager->createNewGame($this->repository);
-      return new ResourceResponse(['key' => $gameKey]);
+    $build = ['#cache'=>['max-age' => 0]];
+
+    $gameKey = $this->gameManager->createNewGame($this->repository);
+    $response = new ResourceResponse(['key' => $gameKey]);
+
+    return ($response->addCacheableDependency($build));
   }
+
 }
